@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <!--指定特定数据库的jdbc驱动jar包的位置-->
+   <classPathEntry location="D:\apache-maven-3.6.3\mystore\mysql\mysql-connector-java\8.0.15\mysql-connector-java-8.0.15.jar"/>
+  <context id="context1" >
+    <jdbcConnection  driverClass="com.mysql.cj.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/fangguansuo?useSSL=false&amp;serverTimezone=Asia/Shanghai" userId="root" password="11111111" >
+      <property name="nullCatalogMeansCurrent" value="true"/>
+    </jdbcConnection>
+    <javaModelGenerator targetPackage="com.woniu.housemanager.pojo" targetProject="C:\Users\Administrator\IdeaProjects\infor\housemanager" ></javaModelGenerator>
+    <sqlMapGenerator targetPackage="com.woniu.housemanager.mapper" targetProject="C:\Users\Administrator\IdeaProjects\infor\housemanager"/>
+    <javaClientGenerator targetPackage="com.woniu.housemanager.mapper" targetProject="C:\Users\Administrator\IdeaProjects\infor\housemanager" type="XMLMAPPER" />
+    <table schema="fangguansuo" tableName="applicant" domainObjectName="Applicant"></table>
+    <table schema="fangguansuo" tableName="areas" domainObjectName="Areas"></table>
+    <table schema="fangguansuo" tableName="buildinginfo" domainObjectName="Buildinginfo"></table>
+    <table schema="fangguansuo" tableName="bunessdetials" domainObjectName="Bunessdetials"></table>
+    <table schema="fangguansuo" tableName="bunessreview" domainObjectName="Bunessreview"></table>
+    <table schema="fangguansuo" tableName="bussnessstatus" domainObjectName="Bussnessstatus"></table>
+    <table schema="fangguansuo" tableName="bussnesstype" domainObjectName="Bussnesstype"></table>
+    <table schema="fangguansuo" tableName="checks" domainObjectName="Checks"></table>
+    <table schema="fangguansuo" tableName="commoninfo" domainObjectName="Commoninfo"></table>
+    <table schema="fangguansuo" tableName="debt" domainObjectName="Debt"></table>
+    <table schema="fangguansuo" tableName="devision" domainObjectName="Devision"></table>
+    <table schema="fangguansuo" tableName="getpeople" domainObjectName="GetPeople"></table>
+    <table schema="fangguansuo" tableName="houseinfo" domainObjectName="HouseInfo"></table>
+    <table schema="fangguansuo" tableName="housenumber" domainObjectName="HouseNumber"></table>
+    <table schema="fangguansuo" tableName="housepeople" domainObjectName="HousePeople"></table>
+    <table schema="fangguansuo" tableName="houseproperty" domainObjectName="HouseProperty"></table>
+    <table schema="fangguansuo" tableName="housestatus" domainObjectName="HouseStatus"></table>
+    <table schema="fangguansuo" tableName="housetransfer" domainObjectName="HouseTransfer"></table>
+    <table schema="fangguansuo" tableName="kaifashang" domainObjectName="KaiFaShang"></table>
+    <table schema="fangguansuo" tableName="landproperty" domainObjectName="LandProperty"></table>
+    <table schema="fangguansuo" tableName="landuse" domainObjectName="LandUse"></table>
+    <table schema="fangguansuo" tableName="layer" domainObjectName="Layer"></table>
+    <table schema="fangguansuo" tableName="loudong" domainObjectName="LouDong"></table>
+    <table schema="fangguansuo" tableName="loupanmanger" domainObjectName="LouPanManager"></table>
+    <table schema="fangguansuo" tableName="makeway" domainObjectName="MakeWay"></table>
+    <table schema="fangguansuo" tableName="materials" domainObjectName="materials"></table>
+    <table schema="fangguansuo" tableName="mortgage" domainObjectName="Mortgage"></table>
+    <table schema="fangguansuo" tableName="planpurpose" domainObjectName="PlanPurpose"></table>
+    <table schema="fangguansuo" tableName="presalepermit" domainObjectName="PresalePermit"></table>
+    <table schema="fangguansuo" tableName="qiudihao" domainObjectName="QiuDiHao"></table>
+    <table schema="fangguansuo" tableName="register" domainObjectName="Register"></table>
+    <table schema="fangguansuo" tableName="role" domainObjectName="Role"></table>
+    <table schema="fangguansuo" tableName="roletree" domainObjectName="RoleTree"></table>
+    <table schema="fangguansuo" tableName="room" domainObjectName="Room"></table>
+    <table schema="fangguansuo" tableName="structrue" domainObjectName="Structrue"></table>
+    <table schema="fangguansuo" tableName="tree" domainObjectName="Tree"></table>
+    <table schema="fangguansuo" tableName="userinfo" domainObjectName="UserInfo"></table>
+    <table schema="fangguansuo" tableName="userinforole" domainObjectName="UserInfoRole"></table>
+    <table schema="fangguansuo" tableName="workerinfo" domainObjectName="WorkerInfo"></table>
+
+
+  </context>
+</generatorConfiguration>
