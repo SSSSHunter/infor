@@ -192,4 +192,16 @@ public class Applicant {
     public void setAinfo(String ainfo) {
         this.ainfo = ainfo;
     }
+
+    @Override
+    public String toString() {
+        return "Applicant{" +
+                "aid=" + aid +
+                ", aname='" + aname + '\'' +
+                ", acard='" + acard + '\'' +
+                ", aadress='" + aadress + '\'' +
+                ", aphone='" + aphone + '\'' +
+                ", ainfo='" + ainfo + '\'' +
+                '}';
+    }
 }

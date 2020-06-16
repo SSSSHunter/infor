@@ -196,6 +196,10 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
+  <select id="findByTypeId" resultMap="BaseResultMap">
+    select * from bunessdetials where btid=#{btid}
+  </select>
   <update id="updateByExampleSelective" parameterType="map" >
     <!--
       WARNING - @mbggenerated
