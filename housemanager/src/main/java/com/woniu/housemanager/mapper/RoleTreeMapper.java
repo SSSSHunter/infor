@@ -4,6 +4,8 @@ import com.woniu.housemanager.pojo.RoleTree;
 import com.woniu.housemanager.pojo.RoleTreeExample;
 import com.woniu.housemanager.pojo.RoleTreeKey;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface RoleTreeMapper {
@@ -94,4 +96,7 @@ public interface RoleTreeMapper {
      * @mbggenerated Sun Jun 07 17:07:39 CST 2020
      */
     int updateByPrimaryKey(RoleTree record);
+    List<Integer> selectByRid(Integer rid);
+    void deleteByRid(Integer rid);
+    void insertSome(Map<String,Object> map);
 }

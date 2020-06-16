@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+<title>Document</title>
+<style>
+li{
+list-style: none;
+}
+</style>
+<link rel="stylesheet" href="ztree/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
+</head>
+<body>
+    <SCRIPT type="text/javascript" >
+           var d=null;
+            axios.defaults.withCredentials = true;
+
+            axios.get('http://localhost:9000/tree/getAllTree?rid=1')
+                            .then(res => {
+                                d = res.data;
+                                init();    
+
+
+                            })
+                            .catch(err => {
+                                console.error(err); 
+             })
+			   
+				
+				var setting = {
+                    check : {
+                        enable : true 
+                    },
+                    data: {
+                  simpleData: {
+                      enable:true,
+                      idKey: "id",
+                      pIdKey: "pid",
+                      rootPId: ""
+                  }
+              },
+					view: {
+						selectedMulti: false,
+						addDiyDom: function(treeId, treeNode){
+							var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
+							if ( treeNode.icon ) {
+								icoObj.removeClass("button ico_docu ico_open").addClass("fa fa-fw " + treeNode.icon).css("background","");
+							}
+						},
+					},
+					callback: {
+						onClick : function(event, treeId, json) {
+
+						}
+					}
+				};
+			
+                function init(){
+                    $.fn.zTree.init($("#treeDemo"), setting, d);
+                }
+
+      
+        
+      
+
+        </SCRIPT>
+       </HEAD>
+      
+      <BODY>
+                  <ul id="tree" class="ztree" style="width:260px; overflow:auto;"></ul>
+           
+      </BODY>
+      </HTML>
+      

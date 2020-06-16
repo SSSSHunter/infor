@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <table border="1" width="100%">
+            <tr>
+                <td>
+                    角色信息
+                </td>
+                <td>
+                    操作
+                </td>
+            </tr>
+            <tr v-for="i in rlist">
+                <td>
+                    {{i.rname}}
+                </td>
+                <td>
+                    <button @click=tree(i.rid)>权限分配</button>
+                    <a href="" @click.prevent="deleteItem(i.rid)">Delete</a>|
+                  <a href="" @click.prevent="findByUid(i.rid)">Update</a>
+                </td>
+            </tr>
+        </table>
+        <table v-show="isshow" border="1" width="100%">
+            <tr>
+                <td>
+                    角色信息:<input v-model="rname" type="text" name="" id="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button @click="save">{{type=='save'?'增加':'修改'}}</button><button @click="isshow=false">取消</button>
+                </td>
+            </tr>
+        </table>
+        <button @click="isshow=true,type='save',init()">添加</button>
+    </div>
+</body>
+</html>
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+            rid:null,
+            rname:null,
+            isshow:false,
+            rlist:null,
+            type:'save'
+        },
+        mounted() {
+            this.findAll();
+        },
+        methods: {
+                findAll(){
+                axios({
+				method: 'GET',
+				url: 'http://localhost:9000/role/findAll',
+                })
+                .then(res => {
+                this.rlist=res.data;
+                console.log(this.rlist)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+                },
+
+                save(){
+                let path="http://localhost:9000/role/save";
+                if(this.type!='save'){
+                    path="http://localhost:9000/role/update"
+                }
+                axios({
+				method: 'POST',
+				url: path,
+				params:{
+                    rid:this.rid,
+					rname:this.rname,
+				}
+                })
+                .then(res => {
+                console.log(this.workname)
+                this.isshow=false;
+                })
+                this.findAll();
+                this.init();
+                },
+
+                tree(rid){
+                    window.location.href="2.html?rid="+rid;
+                },
+
+                init(){
+                    this.rname=null;
+                },
+                findByUid(rid){
+                    this.type='a';
+                    this.isshow=true;
+                    axios({
+                    method: 'GET',
+                    url: 'http://localhost:9000/role/findByRid',
+                    params:{
+					rid:rid,
+				}
+                    })
+                    .then(res => {
+                    this.rname=res.data.rname;
+                    this.rid=res.data.rid;
+                    })
+                    .catch(err => {
+                        console.error(err); 
+                    })
+                },
+                deleteItem(rid){
+                    if(window.confirm("确认要删除吗？")){
+                    axios({
+                        method: 'POST',
+                        url: 'http://localhost:9000/role/delete',
+                        params:{
+                            rid:rid
+                        }
+                        })
+                        .then(res => {
+                        })
+                        this.findAll();
+                    }
+                }
+
+        }  
+    })
+</script>
