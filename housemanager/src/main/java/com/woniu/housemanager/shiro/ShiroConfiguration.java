@@ -21,7 +21,7 @@ import java.util.Map;
 @Configuration
 public class ShiroConfiguration {
     @Resource
-    private TreeService treeServiceImpl;
+    private TreeService treeService;
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
@@ -37,9 +37,12 @@ public class ShiroConfiguration {
         map.put("/index.jsp", "anon");
         map.put("/static/**", "anon");
         map.put("/css/**", "anon");
-        map.put("/js/**", "anon");
+        map.put("/bootstrap/**", "anon");
+        map.put("/jquery/**", "anon");
+        map.put("/ztree/**", "anon");
 
-        List<Tree> trees = treeServiceImpl.findAll();
+
+        List<Tree> trees = treeService.findAll();
         for (Tree tree : trees) {
             if(tree.getFile()!=null){
                 String file = tree.getFile();//  /admin/userinfo/index.jsp
