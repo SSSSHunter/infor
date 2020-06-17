@@ -93,4 +93,5 @@ public interface HouseInfoMapper {
      * @mbggenerated Sun Jun 07 17:07:38 CST 2020
      */
     int updateByPrimaryKey(HouseInfo record);
+
 }

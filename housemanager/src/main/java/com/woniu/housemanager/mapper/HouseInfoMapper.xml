@@ -425,4 +425,5 @@
       propertyrightcode = #{propertyrightcode,jdbcType=VARCHAR}
     where hiid = #{hiid,jdbcType=INTEGER}
   </update>
+
 </mapper>

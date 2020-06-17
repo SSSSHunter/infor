@@ -253,4 +253,9 @@
       devisionname = #{devisionname,jdbcType=VARCHAR}
     where devisionid = #{devisionid,jdbcType=INTEGER}
   </update>
+
+  <!--查询某个区的所有区划-->
+  <select id="findAllByarename" resultType="String">
+    SELECT devisionname FROM devision WHERE areaid = #{areaid}
+  </select>
 </mapper>

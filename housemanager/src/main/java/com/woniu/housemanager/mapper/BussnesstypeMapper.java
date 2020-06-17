@@ -93,4 +93,6 @@ public interface BussnesstypeMapper {
      * @mbggenerated Sun Jun 07 17:07:38 CST 2020
      */
     int updateByPrimaryKey(Bussnesstype record);
+    //得到他项权的信息
+    Integer findMortgages();
 }

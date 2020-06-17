@@ -268,4 +268,17 @@
       bdname = #{bdname,jdbcType=VARCHAR}
     where bdid = #{bdid,jdbcType=INTEGER}
   </update>
+ <!-- 所有的他项权名-->
+  <select id="findAllMortgages" resultMap="BaseResultMap">
+    select DISTINCT btid,bdname from bunessdetials where btid = #{btid}
+  </select>
+  <!-- 他项权需要的资料-->
+  <select id="findAllMaterials" resultMap="BaseResultMap">
+
+      SELECT * FROM bunessdetials WHERE bdname = #{bdname}
+  </select>
+  <!--
+  <resultMap id="BaseResultMapWithMaterials" type="com.woniu.housemanager.pojo.Bunessdetials" extends="BaseResultMap">
+    <collection property="materials" column="bdid" select="com.woniu.housemanager.mapper.materialsMapper.findByBdid"></collection>
+  </resultMap>-->
 </mapper>

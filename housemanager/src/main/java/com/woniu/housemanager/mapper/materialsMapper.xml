@@ -236,4 +236,11 @@
     set mname = #{mname,jdbcType=VARCHAR}
     where mid = #{mid,jdbcType=INTEGER}
   </update>
+
+  <select id="findByBdid" resultMap="BaseResultMap">
+    select * from materials where mid in
+    (
+        select mid from  bunessdetials WHERE bdid = #{bdid}
+    )
+  </select>
 </mapper>

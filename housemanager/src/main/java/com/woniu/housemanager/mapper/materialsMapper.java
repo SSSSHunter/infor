@@ -93,4 +93,6 @@ public interface materialsMapper {
      * @mbggenerated Sun Jun 07 17:07:39 CST 2020
      */
     int updateByPrimaryKey(materials record);
+
+    List findByBdid(Integer bdid);
 }

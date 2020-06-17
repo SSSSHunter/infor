@@ -236,4 +236,8 @@
     set btname = #{btname,jdbcType=VARCHAR}
     where btid = #{btid,jdbcType=INTEGER}
   </update>
+
+  <select id="findMortgages" resultType="Integer">
+    select btid from bussnesstype where btid = 2
+  </select>
 </mapper>

@@ -2,11 +2,15 @@ server:
   port: 9000
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/fangguansuo?useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/fangguansuo?characterEncoding=UTF-8
     username: root
-    password: 11111111
-    mvc:
-      view:
-        prefix: /
-        suffix: .jsp
+    password: 123456
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

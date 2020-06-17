@@ -4,6 +4,8 @@ import com.woniu.housemanager.pojo.Bunessdetials;
 import com.woniu.housemanager.pojo.BunessdetialsExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 public interface BunessdetialsMapper {
     /**
@@ -93,4 +95,8 @@ public interface BunessdetialsMapper {
      * @mbggenerated Sun Jun 07 17:07:38 CST 2020
      */
     int updateByPrimaryKey(Bunessdetials record);
+    //所有的他项权名
+    List findAllMortgages(Integer btid);
+    //他项权需要的资料
+    List findAllMaterials(String bdname);
 }
