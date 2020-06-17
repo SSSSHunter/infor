@@ -7,6 +7,7 @@ import com.woniu.housemanager.pojo.Tree;
 import com.woniu.housemanager.pojo.UserInfo;
 import com.woniu.housemanager.service.UserInfoService;
 import lombok.SneakyThrows;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -21,15 +22,17 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class MyRealm extends AuthorizingRealm {
     @Resource
-    private UserInfoService userinfoServiceImpl;
+    private UserInfoService userinfoService;
 
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String uname = principals.getPrimaryPrincipal().toString();
-        UserInfo info = userinfoServiceImpl.findByName(uname);
+        String uname=principals.getPrimaryPrincipal().toString();
+        UserInfo info=userinfoService.findByName(uname);
+
         //根据用户名查询数据库得到你应该有的权限  并且设置 就ok啦。
         List<String> permissions = new ArrayList<String>();
 
@@ -60,13 +63,13 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String uname = token.getPrincipal().toString();
 
-        UserInfo info = userinfoServiceImpl.findByName(uname);
+        UserInfo info = userinfoService.findByName(uname);
         if(info==null){
             throw new UnknownAccountException();
         }else{
             //把json交给页面
             List<Tree> trees = info.getTrees();
-            Tree tree = new Tree(99999, "注销", "/admin/logout", null);
+            Tree tree = new Tree(99999, "注销", "login.html", null);
             trees.add(tree);
 
             ObjectMapper objectMapper = new ObjectMapper();

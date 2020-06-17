@@ -7,32 +7,41 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 public class LoginController {
     @Resource
     UserInfoService userInfoService;
-    @PostMapping("/login")
-    public String login(UserInfo info, ModelMap map){
+    @GetMapping("/login")
+    public String login( UserInfo info){
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(info.getUname(), info.getUpass());
         try {
             subject.login(token);
-            return "redirect:/admin/index.jsp";
+            return "ok";
         }catch (UnknownAccountException ae) {
-            map.put("error","没有当前账户");
-            return "/index";
+            return "账号不对";
         }catch (IncorrectCredentialsException ae) {
-            map.put("error","密码不正确");
-            return "/index";
+            return "/密码不对";
         } catch (Exception ae) {
-            map.put("error","登录失败：" + ae);
             return "/index";
         }
+    }
+    @GetMapping("/getZtree")
+    public String getTree(HttpServletRequest request){
+        String json= (String) request.getSession().getAttribute("json");
+        
+        return  json;
+    }
+    @GetMapping("/findall")
+    public List<UserInfo> findAll(){
+        List<UserInfo> list=userInfoService.findAll();
+        return  list;
     }
 
     @GetMapping("/admin/logout")

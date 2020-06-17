@@ -35,25 +35,32 @@ public class BussnessstatusServiceImpl implements BussnessstatusService {
     public List ybdybgdjfindAll(String acard) {
         return bussnessstatusMapper.ybdybgdjfindAll(acard);
     }
-
+    //所有的一般抵押变更登记业务
     @Override
     public PageInfo<Bussnessstatus> findAll(Integer pageNum, Integer pageSize, String acard) {
         PageHelper.startPage(pageNum,pageSize);
         List<Bussnessstatus> list =bussnessstatusMapper.ybdybgdjfindAll(acard);
         return new PageInfo<>(list);
     }
-
+    //所有的一般抵押登记业务
     @Override
     public PageInfo<Bussnessstatus> ybdydjfindAll( Integer pageNum, Integer pageSize, String acard) {
         PageHelper.startPage(pageNum,pageSize);
         List<Bussnessstatus> list =bussnessstatusMapper.ybdydjfindAll(acard);
         return new PageInfo<>(list);
     }
-
+    //所有的一般抵押转移登记业务
     @Override
     public PageInfo<Bussnessstatus> ybdyzydjfindAll(Integer pageNum, Integer pageSize, String acard) {
         PageHelper.startPage(pageNum,pageSize);
         List<Bussnessstatus> list =bussnessstatusMapper.ybdyzydjfindAll(acard);
+        return new PageInfo<Bussnessstatus>(list);
+    }
+    //所有的一般抵押注销登记业务
+    @Override
+    public PageInfo<Bussnessstatus> ybdyzxdjfindAll(Integer pageNum, Integer pageSize, String acard) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Bussnessstatus> list =bussnessstatusMapper.ybdyzxdjfindAll(acard);
         return new PageInfo<Bussnessstatus>(list);
     }
 }

@@ -1,5 +1,6 @@
 package com.woniu.housemanager.controller;
 
+import com.woniu.housemanager.mapper.MortgagesLogoutMapper;
 import com.woniu.housemanager.pojo.*;
 import com.woniu.housemanager.service.*;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,8 @@ public class MortgagesapplyController {
     private MortgagesTransferService mortgagesTransferService;
     @Resource
     private MortgagesChangeService mortgagesChangeService;
+    @Resource
+    private MortgagesLogoutService mortgagesLogoutService;
 
 
     //一般抵押登记申请
@@ -37,11 +40,8 @@ public class MortgagesapplyController {
     public void save(Applicant a,String[] names,String[] comphones, String[] cards,
                      String mortgagemoney,String mortgagescope,
                      String mortgagestart,String mortgageend,String propertyrightcode) throws ParseException {
-        //System.out.println("==================================================================");
         //根据房产证号得到房屋信息
         HouseInfo h  = houseInfoService.selectByPropertyrightcode(propertyrightcode);
-        //System.out.println("房屋id"+h.getHiid());
-
 
         //插入申请人(抵押人，也就是债务人)
         Debt d = new Debt();
@@ -74,7 +74,6 @@ public class MortgagesapplyController {
         //抵押编码
         String code = (simpleDateFormat.format(date).replace("-","")+ (Math.random()*10)).replace(".","").substring(0,13);
         mortgage.setMortgagecode(code);
-        //System.out.println(code);
         //抵押人id
         mortgage.setDebt(debtid);
         mortgageService.insert(mortgage);
@@ -86,7 +85,6 @@ public class MortgagesapplyController {
         //用抵押编码做业务编号
         bussnessstatus.setBsid(code);
         bussnessstatus.setHiid(h.getHiid());
-        //System.out.println("----------------"+mortgageid);
         bussnessstatus.setMortgageid(mortgageid);
         bussnessstatus.setBsstatus("已受理");
         bussnessstatus.setBsdate(date);
@@ -100,16 +98,13 @@ public class MortgagesapplyController {
     //根据抵押人得到他项权证号
     @PostMapping("/findmortgagecode")
     public String findmortgagecode(String debtname){
-        //System.out.println(debtname);
         Debt debt = debtService.selectBydebtname(debtname);
         Mortgage mortgage =  mortgageService.selectBydebt(debt.getDebt());
-        //System.out.println(mortgage.getMortgagecode());
         return mortgage.getMortgagecode();
     }
     //根据抵押人得到房产证号
     @PostMapping("/findpropertyrightcode")
     public String findpropertyrightcode(String debtname){
-        //System.out.println(debtname);
         Debt debt = debtService.selectBydebtname(debtname);
         Mortgage mortgage =  mortgageService.selectBydebt(debt.getDebt());
         HouseInfo houseInfo = houseInfoService.selectByHiid(mortgage.getHiid());
@@ -166,13 +161,7 @@ public class MortgagesapplyController {
     //一般抵押变更
     @PostMapping("/change")
     public void change(String[] names,String[] cards,MortgagesChange mortgagesChange,String[] changes){
-//        System.out.println("------------------------------------------");
-//        System.out.println(Arrays.toString(names));
-//        System.out.println("------------------------------------------");
-//        System.out.println(mortgagesChange.getHouseaddress()+"--"+mortgagesChange.getPropertyrightcode()+"--"+mortgagesChange.getMortgagecode());
-//        System.out.println("------------------------------------------");
-//        System.out.println(Arrays.toString(changes));
-//        System.out.println("------------------------------------------");
+
         if(names[0].equals(changes[0])){
             mortgagesChange.setMortgagername(changes[1]);
             System.out.println(mortgagesChange.getMortgagername());
@@ -215,47 +204,43 @@ public class MortgagesapplyController {
         bussnessstatus.setWorkid(1);
         bussnessstatusService.insert(bussnessstatus);
 
+    }
 
-//        //根据抵押权转让人的名字a.getaname找到debt 修改信息
-//        Debt debt = debtService.selectBydebtname(a.getAname());
-//        System.out.println(debt.getDebtname());
-//        MortgagesTransfer mortgagesTransfer = new MortgagesTransfer();
-//        mortgagesTransfer.setDebt(debt.getDebt());
-//        mortgagesTransfer.setMtcard(cards[0]);
-//        mortgagesTransfer.setMtname(names[0]);
-//        mortgagesTransfer.setMtphone(comphones[0]);
-//        mortgagesTransferService.insert(mortgagesTransfer);
-//        System.out.println(mortgagesTransfer.getMtname());
-//
-//        //得到抵押人的信息 修改信息
-//        Debt debt1 = debtService.selectBydebtname(names[1]);
-//        //得到房产信息  修改地址
-//        Mortgage mortgage =  mortgageService.selectBydebt(debt1.getDebt());
-//        HouseInfo houseInfo = houseInfoService.selectByHiid(mortgage.getHiid());
-//        //插入到他项权的表
-//        Mortgage mortgage1 = new Mortgage();
-//        mortgage1.setDebt(debt1.getDebt());
-//        mortgage1.setHiid(houseInfo.getHiid());
-//        mortgage1.setBdid(39);
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        String code = (simpleDateFormat.format(new Date()).replace("-","")+ (Math.random()*10)).replace(".","").substring(0,13);
-//        mortgage1.setMortgagecode(code);
-//        mortgageService.insert(mortgage1);
-//        Integer mortgageid = mortgage1.getMortgageid();
-//
-//        //插入业务状态表
-//        Bussnessstatus bussnessstatus = new Bussnessstatus();
-//        bussnessstatus.setMortgageid(mortgageid);
-//        bussnessstatus.setBsstatus("已受理");
-//        bussnessstatus.setBsid(code);
-//        bussnessstatus.setBsdate(new Date());
-//        bussnessstatus.setHiid(houseInfo.getHiid());
-//        //抵押权受让人 为申请人
-//        bussnessstatus.setAname();
-//        bussnessstatus.setAcard();
-//        //设置受理人id
-//        bussnessstatus.setWorkid(1);
-//        bussnessstatusService.insert(bussnessstatus);
+    //一般抵押注销
+    @PostMapping("/logout")
+    public void logout(String[] names,String[] cards,MortgagesLogout mortgagesLogout){
+
+        //插入注销表
+        mortgagesLogout.setMlname(names[0]);
+        mortgagesLogout.setMlcard(cards[0]);
+        mortgagesLogoutService.insert(mortgagesLogout);
+        //得到房产信息
+        HouseInfo houseInfo = houseInfoService.selectByPropertyrightcode(mortgagesLogout.getPropertyrightcode());
+        //插入到他项权的表
+        Mortgage mortgage = new Mortgage();
+        mortgage.setHiid(houseInfo.getHiid());
+        mortgage.setBdid(46);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String code = (simpleDateFormat.format(new Date()).replace("-","")+ (Math.random()*10)).replace(".","").substring(0,13);
+        mortgage.setMortgagecode(code);
+        mortgageService.insert(mortgage);
+        Integer mortgageid = mortgage.getMortgageid();
+
+
+        //插入业务状态表
+        Bussnessstatus bussnessstatus = new Bussnessstatus();
+        bussnessstatus.setMortgageid(mortgageid);
+        bussnessstatus.setBsstatus("已受理");
+        bussnessstatus.setBsid(code);
+        bussnessstatus.setBsdate(new Date());
+        bussnessstatus.setHiid(houseInfo.getHiid());
+        //抵押人 为申请人
+        bussnessstatus.setAname(names[0]);
+        bussnessstatus.setAcard(cards[0]);
+        //设置受理人id
+        bussnessstatus.setWorkid(1);
+        bussnessstatusService.insert(bussnessstatus);
+
     }
 }
 

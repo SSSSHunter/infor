@@ -17,4 +17,5 @@ public interface BussnessstatusService {
     PageInfo<Bussnessstatus> findAll(Integer pageNum, Integer pageSize, String acard);
     PageInfo<Bussnessstatus> ybdydjfindAll(Integer pageNum, Integer pageSize, String acard);
     PageInfo<Bussnessstatus> ybdyzydjfindAll(Integer pageNum, Integer pageSize, String acard);
+    PageInfo<Bussnessstatus> ybdyzxdjfindAll(Integer pageNum, Integer pageSize, String acard);
 }

@@ -8,4 +8,6 @@ public interface HouseInfoService {
     HouseInfo selectByPropertyrightcode(String propertyrightcode);
 
     HouseInfo selectByHiid(Integer hiid);
+
+    void save(HouseInfo houseInfo);
 }

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/doc.min.css">
+	<link rel="stylesheet" href="ztree/zTreeStyle.css">
+	<style>
+	.tree li {
+        list-style-type: none;
+		cursor:pointer;
+	}
+	</style>
+  </head>
+
+  <body >
+	<div id="app" >
+		<button class="btn btn-success" @click="ctree">分配许可</button>
+		<ul id="treeDemo" class="ztree"></ul>
+	</div>
+			 
+    <script src="jquery/jquery-2.1.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="script/docs.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+	<script src="ztree/jquery.ztree.all-3.5.min.js"></script>
+   
+  </body>
+</html>
+<script type="text/javascript">
+	var d=null;
+	axios.defaults.withCredentials = true;
+	var rid=window.location.href.split("=")[1];
+	console.log(rid);
+	axios.get('http://localhost:9000/tree/getAllTree?rid='+rid)
+	.then(res => {
+					 d = res.data;
+					 init();    
+
+				 })
+				 .catch(err => {
+					 console.error(err);		 
+    })
+	
+	 
+	 var setting = {
+		 check : {
+			 enable : true 
+		 },  
+		 data: {
+			simpleData: {
+				enable:true,
+				idKey: "id",
+				pIdKey: "pid",
+				rootPId: ""
+			}
+		},
+		 view: {
+			 selectedMulti: false,
+			 addDiyDom: function(treeId, treeNode){
+				 var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
+				 if ( treeNode.icon ) {
+					 icoObj.removeClass("button ico_docu ico_open").addClass("fa fa-fw " + treeNode.icon).css("background","");
+				 }
+			 },
+		 },
+		 callback: {
+			 onClick : function(event, treeId, json) {
+
+			 }
+		 }
+	 };
+ 
+	 function init(){
+		 $.fn.zTree.init($("#treeDemo"), setting, d);
+	 }
+	 new Vue({
+		 el:"#app",
+		 data:{
+			 rids:null
+		 },
+		 methods: {
+			 ctree(){
+				 this.rids=$.fn.zTree.getZTreeObj("treeDemo").getCheckedNodes(true);
+				 let rid=window.location.href.split("=")[1];
+				 let pids="";
+				 for(var i=0;i<this.rids.length;i++){
+					pids+=this.rids[i].id+"&";
+				 }
+				 console.log(pids);
+				axios({
+				method: 'POST',
+				url: 'http://localhost:9000/role/assigntree',
+				params:{
+					rid:rid,
+					pids:pids
+				},
+                })
+                .then(res => {
+                console.log(this.workname)
+                this.isshow=false;
+                
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+                },
+                tree(rid){
+                    window.location.href="2.html?rid="+rid;
+                }
+				 
+			 }
+		 })
+</script>

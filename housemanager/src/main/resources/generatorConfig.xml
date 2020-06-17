@@ -9,7 +9,7 @@
     <javaModelGenerator targetPackage="com.woniu.housemanager.pojo" targetProject="src/main/java" ></javaModelGenerator>
     <sqlMapGenerator targetPackage="com.woniu.housemanager.mapper" targetProject="src/main/java" ></sqlMapGenerator>
     <javaClientGenerator targetPackage="com.woniu.housemanager.mapper" targetProject="src/main/java" type="XMLMAPPER" />
-    <table schema="fangguansuo" tableName="applicant" domainObjectName="Applicant"></table>
+    <!--<table schema="fangguansuo" tableName="applicant" domainObjectName="Applicant"></table>
     <table schema="fangguansuo" tableName="areas" domainObjectName="Areas"></table>
     <table schema="fangguansuo" tableName="buildinginfo" domainObjectName="Buildinginfo"></table>
     <table schema="fangguansuo" tableName="bunessdetials" domainObjectName="Bunessdetials"></table>
@@ -49,6 +49,8 @@
     <table schema="fangguansuo" tableName="userinforole" domainObjectName="UserInfoRole"></table>
     <table schema="fangguansuo" tableName="workerinfo" domainObjectName="WorkerInfo"></table>
     <table schema="fangguansuo" tableName="mortgagestransfer" domainObjectName="MortgagesTransfer"></table>
-    <table schema="fangguansuo" tableName="mortgageschange" domainObjectName="MortgagesChange"></table>
+    <table schema="fangguansuo" tableName="mortgageschange" domainObjectName="MortgagesChange"></table>-->
+    <table schema="fangguansuo" tableName="mortgageslogout" domainObjectName="MortgagesLogout"></table>
+
   </context>
 </generatorConfiguration>

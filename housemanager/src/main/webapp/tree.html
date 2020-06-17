@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/doc.min.css">
+	<link rel="stylesheet" href="ztree/zTreeStyle.css">
+	<style>
+	.tree li {
+        list-style-type: none;
+		cursor:pointer;
+	}
+	</style>
+  </head>
+
+  <body>
+    <div id="app">
+        
+        <ul  id="treeDemo" class="ztree"></ul>
+        <table border="1" width="100%" v-show="isshow">
+            <tr>
+                <th>权限名称:<input v-model="name" type="text" name="" id=""></th>
+            </tr>
+            <tr>
+                <th>权限目录:<input v-model="file" type="text" name="" id=""></th>
+            </tr>
+           
+            <tr>
+                <th>
+                <button @click="save()">{{type=='save'?'增加':'修改'}}</button><BUtton @click="isshow=false">取消</BUtton>
+                </th>
+            </tr>
+        </table>
+    </div>
+                  
+			
+    <script src="jquery/jquery-2.1.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="script/docs.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+	<script src="ztree/jquery.ztree.all-3.5.min.js"></script>
+        
+  </body>
+</html>
+<script type="text/javascript">
+    var d=null;
+    axios.defaults.withCredentials = true;
+    beagin();
+    function beagin(){
+        axios.get('http://localhost:9000/tree/getAllTree')
+        .then(res => {
+                        d = res.data;
+                        $.fn.zTree.init($("#treeDemo"), setting, d);   
+
+                        })
+                    .catch(err => {
+                        console.error(err);						 		 
+    })
+    }
+	
+	
+    var setting = {
+            view: {
+                selectedMulti: false,
+                addDiyDom: function(treeId, treeNode){
+                    var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
+                    if ( treeNode.icon ) {
+                        icoObj.removeClass("button ico_docu ico_open").addClass("fa fa-fw " + treeNode.icon).css("background","");
+                    }
+                    
+                },
+                addHoverDom: function(treeId, treeNode){  
+                //   <a><span></span></a>
+                    var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
+                    if (treeNode.editNameFlag || $("#btnGroup"+treeNode.tId).length>0) return;
+                    var s = '<span id="btnGroup'+treeNode.tId+'">';
+                    if ( treeNode.level == 0 ) {
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;" href="#" onclick="addpermission('+treeNode.id+')" >&nbsp;&nbsp;<i class="fa fa-fw fa-plus rbg "></i></a>';
+                    } else if ( treeNode.level == 1 ) {
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;"  href="#"  title="修改权限信息" onclick="updpermission('+treeNode.id+')">&nbsp;&nbsp;<i class="fa fa-fw fa-edit rbg "></i></a>';
+                        if (treeNode.children.length == 0) {
+                            s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;" href="#" onclick="cutpermission('+treeNode.id+')" >&nbsp;&nbsp;<i class="fa fa-fw fa-times rbg "></i></a>';
+                        }
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;" href="#" onclick="addpermission('+treeNode.id+')" >&nbsp;&nbsp;<i class="fa fa-fw fa-plus rbg "></i></a>';
+                    } else if ( treeNode.level == 2 ) {
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;"  href="#" title="修改权限信息" onclick="updpermission('+treeNode.id+')">&nbsp;&nbsp;<i class="fa fa-fw fa-edit rbg "></i></a>';
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;" href="#" onclick="cutpermission('+treeNode.id+')" >&nbsp;&nbsp;<i class="fa fa-fw fa-times rbg "></i></a>';
+                    }
+    
+                    s += '</span>';
+                    aObj.append(s);
+                },
+              
+                removeHoverDom: function(treeId, treeNode){
+                    $("#btnGroup"+treeNode.tId).remove();
+                }
+            },
+            data: {
+                    simpleData: {
+                    enable:true,
+                    idKey: "id",
+                    pIdKey: "pid",
+                    rootPId: ""
+                    }
+		        },
+            callback: {
+                onClick : function(event, treeId, json) {
+
+                }
+            }
+        }
+        function addpermission(id){
+            this.window.vue.isshow=true;
+            this.window.vue.type='save';
+            this.vue.init();
+            this.window.vue.pid=id;
+        };
+        function updpermission(id){
+            console.log(id);
+            this.window.vue.isshow=true;
+            this.window.vue.type='s';
+            axios.get('http://localhost:9000/tree/getOneTree?id='+id)
+            .then(res => {
+                            this.window.vue.id=res.data.id;
+                            this.window.vue.pid=res.data.pid;
+                            this.window.vue.file=res.data.file;
+                            this.window.vue.name=res.data.name;     
+                         })
+                        
+        };
+        function cutpermission(pid){
+            if(window.confirm("确认要删除吗？")){
+                axios({
+                    method: 'POST',
+                    url: 'http://localhost:9000/tree/delete',
+                    params:{
+                        id:pid
+                    }
+                    })
+                    .then(res => {
+                    })
+            }
+            beagin();
+        };
+        var vue=new Vue({
+            el:"#app",
+            methods: {
+                init(){
+                    this.name=null;
+                    this.file=null;
+                    this.pid=null;
+                },
+                save(){
+                    let path="http://localhost:9000/tree/save";
+                    if(this.type!='save'){
+                        path="http://localhost:9000/tree/update"
+                    }
+                    axios({
+                    method: 'POST',
+                    url: path,
+                    params:{
+                        id:this.id,
+                        pid:this.pid,
+                        file:this.file,
+                        name:this.name
+                    }
+                    })
+                    .then(res => {
+                    this.isshow=false;
+                    })
+                    this.init();
+                    beagin();
+                    }
+            },  
+            data:{
+                isshow:false,
+                id:null,
+                name:null,
+                file:null,
+                pid:null,
+                type:'save'
+            }  
+        })
+        
+       
+</script>

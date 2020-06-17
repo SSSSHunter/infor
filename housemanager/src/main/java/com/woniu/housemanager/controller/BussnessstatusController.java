@@ -18,7 +18,7 @@ public class BussnessstatusController {
     @Resource
     private BussnessstatusService bussnessstatusService;
 
-    //所有的一般抵变更移登记业务
+    //所有的一般抵押变更登记业务
     @PostMapping("/ybdybgdjfindAll1")
     public PageInfo<Bussnessstatus> ybdybgdjfindAll1(String acard,Integer pageNum,Integer pageSize){
         return bussnessstatusService.findAll(pageNum, pageSize,acard);
@@ -33,5 +33,11 @@ public class BussnessstatusController {
     public PageInfo<Bussnessstatus> ybdydjfindAll1(String acard,Integer pageNum,Integer pageSize){
         //PageHelper.startPage(pageNum,pageSize);
         return bussnessstatusService.ybdydjfindAll(pageNum, pageSize,acard);
+    }
+    //所有的一般抵押注销业务
+    @PostMapping("/ybdyzxfindAll1")
+    public PageInfo<Bussnessstatus> ybdyzxfindAll1(String acard,Integer pageNum,Integer pageSize){
+        //PageHelper.startPage(pageNum,pageSize);
+        return bussnessstatusService.ybdyzxdjfindAll(pageNum, pageSize,acard);
     }
 }

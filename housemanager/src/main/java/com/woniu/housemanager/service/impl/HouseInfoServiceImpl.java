@@ -37,4 +37,9 @@ public class HouseInfoServiceImpl implements HouseInfoService {
         return houseInfoMapper.selectByPrimaryKey(hiid);
     }
 
+    @Override
+    public void save(HouseInfo houseInfo) {
+        houseInfoMapper.insertSelective(houseInfo);
+    }
+
 }

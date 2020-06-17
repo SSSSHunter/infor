@@ -11,6 +11,7 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
-mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
