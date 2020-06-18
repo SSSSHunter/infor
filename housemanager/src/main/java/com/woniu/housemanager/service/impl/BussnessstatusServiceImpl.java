@@ -20,21 +20,6 @@ public class BussnessstatusServiceImpl implements BussnessstatusService {
     public void insert(Bussnessstatus bussnessstatus) {
         bussnessstatusMapper.insert(bussnessstatus);
     }
-    //所有的一般抵押登记业务
-    @Override
-    public List ybdydjfindAll() {
-        return bussnessstatusMapper.ybdydjfindAll(null);
-    }
-    //所有的一般抵押转移登记业务
-    @Override
-    public List ybdyzydjfindAll() {
-        return bussnessstatusMapper.ybdyzydjfindAll(null);
-    }
-    //所有的一般抵押变更登记业务
-    @Override
-    public List ybdybgdjfindAll(String acard) {
-        return bussnessstatusMapper.ybdybgdjfindAll(acard);
-    }
     //所有的一般抵押变更登记业务
     @Override
     public PageInfo<Bussnessstatus> findAll(Integer pageNum, Integer pageSize, String acard) {
