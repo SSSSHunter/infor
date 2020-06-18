@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>一般抵押登记表</title>
+        <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/qs/6.9.4/qs.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+        <link rel="stylesheet" href="../layui/css/layui.css">
+    </head>
+    <body>
+        <div id="app">
+            <form class="layui-form" action="">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr class="layui-bg-blue">
+                            <th colspan="9">
+                                申请人情况:
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center;" >抵押权人:</td>
+                            <td colspan="4">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" required lay-verify="required"
+                                        placeholder="请输入抵押权人姓名" autocomplete="off" class="layui-input" v-model="aname">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">联系电话:</td>
+                            <td colspan="5">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入联系电话"
+                                        autocomplete="off" class="layui-input" v-model="aphone">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">证件类型:</td>
+                            <td colspan="4">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" 
+                                        placeholder="请输入证件类型" autocomplete="off" class="layui-input">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">证件号码:</td>
+                            <td colspan="4">
+                                <div class="layui-slider-input-txt">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入证件号码"
+                                        autocomplete="off" class="layui-input" v-model="acard">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">抵押人:</td>
+                            <td colspan="4">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" required lay-verify="required"
+                                        placeholder="请输入抵押人姓名" autocomplete="off" class="layui-input" v-model="names[0]">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">联系电话:</td>
+                            <td colspan="5">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入联系电话"
+                                        autocomplete="off" class="layui-input" v-model="comphones[0]">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">证件类型:</td>
+                            <td colspan="4">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" 
+                                        placeholder="请输入证件类型" autocomplete="off" class="layui-input">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">证件号码:</td>
+                            <td colspan="5">
+                                <div class="layui-slider-input-txt">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入证件号码"
+                                        autocomplete="off" class="layui-input" v-model="cards[0]">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">债务人:</td>
+                            <td colspan="4">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" required lay-verify="required"
+                                        placeholder="请输入债务人姓名" autocomplete="off" class="layui-input" v-model="names[1]">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">联系电话:</td>
+                            <td colspan="5">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入联系电话"
+                                        autocomplete="off" class="layui-input" v-model="comphones[1]">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">证件类型:</td>
+                            <td colspan="4">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" 
+                                        placeholder="请输入证件类型" autocomplete="off" class="layui-input">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">证件号码:</td>
+                            <td colspan="5">
+                                <div class="layui-slider-input-txt">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入证件号码"
+                                        autocomplete="off" class="layui-input" v-model="cards[1]">
+                                </div>
+                            </td>
+                        </tr>                       
+                        <tr class="layui-bg-blue">
+                            <td colspan="9">申请内容:</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">房屋所有权证号
+                                （预告登记证明号）:</td>
+                            <td colspan="4">
+                                <input type="text" name="title" required lay-verify="required" placeholder="请输入房屋所有权证号"
+                                    autocomplete="off" class="layui-input" v-model="propertyrightcode">
+                            </td>
+                            <td style="text-align: center;">房屋坐落:</td>
+                            <td colspan="5">
+                                <input type="text" name="title" required lay-verify="required" placeholder="请输入房屋坐落地"
+                                    autocomplete="off" class="layui-input" v-model="houseaddress">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">担保范围:</td>
+                            <td colspan="4">    
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入担保范围"
+                                        autocomplete="off" class="layui-input" v-model="mortgagescope">                        
+                            </td>
+                            <td style="text-align: center;">被担保债权数额:</td>
+                            <td colspan="5">
+                                <input type="text" name="title" required lay-verify="required" placeholder="请输入被担保债权数额"
+                                    autocomplete="off" class="layui-input" v-model="mortgagemoney">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">债务履行期
+                                （债权确定时间）:</td>
+                            <td colspan="4">
+                                <input type="text" name="title" required lay-verify="required" placeholder="请输入债务开始时间"
+                                    autocomplete="off" class="layui-input" v-model="mortgagestart">
+                            </td>
+                            <td style="text-align: center;">债务履行期
+                                （债权结束时间）:</td>
+                            <td colspan="4">
+                                <input type="text" name="title" required lay-verify="required" placeholder="请输入债务结束时间"
+                                    autocomplete="off" class="layui-input" v-model="mortgageend">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">备注:</td>
+                            <td colspan="9">
+                                <div layui-slider-input-txt>
+                                    <input type="text" name="title"  
+                                    autocomplete="off" class="layui-input" >
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="layui-bg-blue">
+                            <td colspan="9">校验证件:</td>
+                        </tr>
+                        <tr  v-for="item in materials" v-model="mname">
+                            <td colspan="6" style="text-align: center;" >
+                                {{item}}
+                            </td>
+                            <td colspan="3">
+                                <button type="button" class="layui-btn-normal layui-btn-sm" id="test1">
+                                    <i class="layui-icon">&#xe67c;</i>上传文件
+                                  </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="layui-form-item" style="text-align: center;">
+                    <div class="layui-input-block">
+                      <button class="layui-btn" lay-submit lay-filter="formDemo" type="button" @click="apply()">立即受理</button>
+                      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                  </div>
+            </form>
+        </div>
+    </body>
+</html>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+<script src="layui/layui.js"></script>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+    new Vue({
+        el: "#app",
+        data: {
+            names:[],//名字
+            cards:[],//身份证
+            comphones:[],//联系方式
+
+            aname: null,//名字
+            acard: null,//身份证
+            aphone: null,//联系方式
+
+            materials:null,//资料
+            mname:null,//资料名
+            propertyrightcode:null,//房产证号
+            houseaddress: null,//房屋坐落
+            mortgagescope:null,//抵押范围
+            mortgagemoney:null,//抵押金额
+            mortgagestart:null,//开始时间
+            mortgageend:null,//结束时间
+
+            uname:null,//登录人的name
+            bdname:"一般抵押登记",
+        },
+        
+        methods: {
+            //资料
+            MaterialsfindAll(){
+                //console.log(this.bdname); 
+                axios({
+                headers:  {'Content-Type': 'application/x-www-form-urlencoded'},
+                method:'post',
+                url: "http://localhost:9000/mortgages/ybdy",
+                params: {
+                    bdname:this.bdname,
+                }
+                })
+                .then(res => {
+                    this.materials = res.data;
+                    //console.log(res); 
+                })
+                .catch(err =>{
+                    console.error(err);
+                })
+            },
+             //受理
+            apply(){
+                this.uname = sessionStorage.getItem("name");
+                let params = new URLSearchParams;
+                params.append('uname', this.uname);
+                params.append('names', this.names);
+                params.append('cards', this.cards);
+                params.append('comphones', this.comphones);
+
+                params.append('aname', this.aname);
+                params.append('aphone', this.aphone);
+                params.append('acard', this.acard);
+                params.append('mortgagescope', this.mortgagescope);
+                params.append('propertyrightcode', this.propertyrightcode);
+                params.append('mortgagemoney', this.mortgagemoney);
+                params.append('mortgagestart', this.mortgagestart);
+                params.append('houseaddress', this.houseaddress);
+                params.append('mortgageend', this.mortgageend);
+                params.append('bdname', this.bdname);
+                
+                axios({
+                    headers:  {'Content-Type': 'application/x-www-form-urlencoded'},
+                    method:'post',
+                    url: "http://localhost:9000/mortgagesapply/save",
+                    data: params,
+                })
+                .catch(err => {
+                        console.error(err);
+                })
+                window.location.href='Ybdydjyw.html';
+            }
+        },
+        mounted() {
+            this.MaterialsfindAll();
+        },
+    });
+</script>
