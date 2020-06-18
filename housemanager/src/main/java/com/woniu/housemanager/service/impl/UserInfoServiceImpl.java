@@ -26,4 +26,19 @@ public class UserInfoServiceImpl implements UserInfoService {
     public void save(UserInfo userInfo) {
         userInfoMapper.insert(userInfo);
     }
+
+    @Override
+    public UserInfo findByUserInfo(UserInfo userInfo) {
+        return userInfoMapper.findByUserInfo(userInfo);
+    }
+
+    @Override
+    public void updpwd(UserInfo userInfo) {
+        userInfoMapper.updateByPrimaryKey(userInfo);
+    }
+
+    @Override
+    public UserInfo findByUid(Integer uid) {
+        return userInfoMapper.selectByPrimaryKey(uid);
+    }
 }
