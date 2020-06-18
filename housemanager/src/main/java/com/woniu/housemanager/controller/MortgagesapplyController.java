@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
- * 一般抵押的所有业务
+ * 一般抵押的所有受理
  */
 @RestController
 @RequestMapping("/mortgagesapply")
@@ -33,16 +33,21 @@ public class MortgagesapplyController {
     private MortgagesChangeService mortgagesChangeService;
     @Resource
     private MortgagesLogoutService mortgagesLogoutService;
-
+    @Resource
+    private UserInfoService userInfoService;
+    @Resource
+    private WorkerInfoService workerInfoService;
 
     //一般抵押登记申请
     @PostMapping("/save")
     public void save(Applicant a,String[] names,String[] comphones, String[] cards,
-                     String mortgagemoney,String mortgagescope,
-                     String mortgagestart,String mortgageend,String propertyrightcode) throws ParseException {
+                     String mortgagemoney,String mortgagescope, String mortgagestart,
+                     String mortgageend,String propertyrightcode,String uname) throws ParseException {
+        UserInfo u = userInfoService.findByName(uname);
+        Integer uid = u.getUid();
+        WorkerInfo w = workerInfoService.findByUid(uid);
         //根据房产证号得到房屋信息
         HouseInfo h  = houseInfoService.selectByPropertyrightcode(propertyrightcode);
-
         //插入申请人(抵押人，也就是债务人)
         Debt d = new Debt();
         d.setDebtname(names[0]);
@@ -58,8 +63,6 @@ public class MortgagesapplyController {
         debt.setDeptphone(a.getAphone());
         debt.setDeptinfo("抵押权人");
         debtService.insert(debt);
-
-
         //一般抵押登记表
         Mortgage mortgage = new Mortgage();
         mortgage.setHiid(h.getHiid());
@@ -78,8 +81,6 @@ public class MortgagesapplyController {
         mortgage.setDebt(debtid);
         mortgageService.insert(mortgage);
         Integer mortgageid = mortgage.getMortgageid();
-
-
         //插入业务状态表
         Bussnessstatus bussnessstatus = new Bussnessstatus();
         //用抵押编码做业务编号
@@ -91,9 +92,8 @@ public class MortgagesapplyController {
         bussnessstatus.setAname(d.getDebtname());
         bussnessstatus.setAcard(d.getDebtcard());
         //设置受理人id
-        bussnessstatus.setWorkid(1);
+        bussnessstatus.setWorkid(w.getWorkid());
         bussnessstatusService.insert(bussnessstatus);
-
     }
     //根据抵押人得到他项权证号
     @PostMapping("/findmortgagecode")
@@ -112,8 +112,10 @@ public class MortgagesapplyController {
     }
     //一般抵押转移
     @PostMapping("/transfer")
-    public void transfer(Applicant a,String[] names,String[] comphones, String[] cards){
-
+    public void transfer(Applicant a,String[] names,String[] comphones, String[] cards,String uname){
+        UserInfo u = userInfoService.findByName(uname);
+        Integer uid = u.getUid();
+        WorkerInfo w = workerInfoService.findByUid(uid);
         //根据抵押权转让人的名字a.getaname找到debt
         // 在他项权转移表中 插入关系  debt的主键 抵押权受让人的名字,身份证号，电话，names[0],cards[0]，comphones[0]
         Debt debt = debtService.selectBydebtname(a.getAname());
@@ -125,7 +127,6 @@ public class MortgagesapplyController {
         mortgagesTransfer.setMtphone(comphones[0]);
         mortgagesTransferService.insert(mortgagesTransfer);
         System.out.println(mortgagesTransfer.getMtname());
-
         //得到抵押人的信息
         Debt debt1 = debtService.selectBydebtname(names[1]);
         //得到房产信息
@@ -141,7 +142,6 @@ public class MortgagesapplyController {
         mortgage1.setMortgagecode(code);
         mortgageService.insert(mortgage1);
         Integer mortgageid = mortgage1.getMortgageid();
-
         //插入业务状态表
         Bussnessstatus bussnessstatus = new Bussnessstatus();
         bussnessstatus.setMortgageid(mortgageid);
@@ -153,15 +153,18 @@ public class MortgagesapplyController {
         bussnessstatus.setAname(a.getAname());
         bussnessstatus.setAcard(a.getAcard());
         //设置受理人id
-        bussnessstatus.setWorkid(1);
+        bussnessstatus.setWorkid(w.getWorkid());
         bussnessstatusService.insert(bussnessstatus);
     }
 
 
     //一般抵押变更
     @PostMapping("/change")
-    public void change(String[] names,String[] cards,MortgagesChange mortgagesChange,String[] changes){
-
+    public void change(String[] names,String[] cards,MortgagesChange mortgagesChange,String[] changes,String uname){
+        UserInfo u = userInfoService.findByName(uname);
+        Integer uid = u.getUid();
+        WorkerInfo w = workerInfoService.findByUid(uid);
+        //判断变更的内容
         if(names[0].equals(changes[0])){
             mortgagesChange.setMortgagername(changes[1]);
             System.out.println(mortgagesChange.getMortgagername());
@@ -172,10 +175,8 @@ public class MortgagesapplyController {
             mortgagesChange.setHouseaddress(changes[1]);
             System.out.println(mortgagesChange.getHouseaddress());
         }
-
         //得到房产信息
         HouseInfo houseInfo = houseInfoService.selectByPropertyrightcode(mortgagesChange.getPropertyrightcode());
-
         //插入变更表
         mortgagesChangeService.insert(mortgagesChange);
         //插入到他项权的表
@@ -187,9 +188,6 @@ public class MortgagesapplyController {
         mortgage.setMortgagecode(code);
         mortgageService.insert(mortgage);
         Integer mortgageid = mortgage.getMortgageid();
-
-
-
         //插入业务状态表
         Bussnessstatus bussnessstatus = new Bussnessstatus();
         bussnessstatus.setMortgageid(mortgageid);
@@ -201,15 +199,16 @@ public class MortgagesapplyController {
         bussnessstatus.setAname(names[1]);
         bussnessstatus.setAcard(cards[1]);
         //设置受理人id
-        bussnessstatus.setWorkid(1);
+        bussnessstatus.setWorkid(w.getWorkid());
         bussnessstatusService.insert(bussnessstatus);
-
     }
 
     //一般抵押注销
     @PostMapping("/logout")
-    public void logout(String[] names,String[] cards,MortgagesLogout mortgagesLogout){
-
+    public void logout(String[] names,String[] cards,MortgagesLogout mortgagesLogout,String uname){
+        UserInfo u = userInfoService.findByName(uname);
+        Integer uid = u.getUid();
+        WorkerInfo w = workerInfoService.findByUid(uid);
         //插入注销表
         mortgagesLogout.setMlname(names[0]);
         mortgagesLogout.setMlcard(cards[0]);
@@ -225,8 +224,6 @@ public class MortgagesapplyController {
         mortgage.setMortgagecode(code);
         mortgageService.insert(mortgage);
         Integer mortgageid = mortgage.getMortgageid();
-
-
         //插入业务状态表
         Bussnessstatus bussnessstatus = new Bussnessstatus();
         bussnessstatus.setMortgageid(mortgageid);
@@ -238,9 +235,8 @@ public class MortgagesapplyController {
         bussnessstatus.setAname(names[0]);
         bussnessstatus.setAcard(cards[0]);
         //设置受理人id
-        bussnessstatus.setWorkid(1);
+        bussnessstatus.setWorkid(w.getWorkid());
         bussnessstatusService.insert(bussnessstatus);
-
     }
 }
 

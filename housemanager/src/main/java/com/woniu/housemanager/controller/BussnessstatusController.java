@@ -31,13 +31,11 @@ public class BussnessstatusController {
     //所有的一般抵押登记业务
     @PostMapping("/ybdydjfindAll1")
     public PageInfo<Bussnessstatus> ybdydjfindAll1(String acard,Integer pageNum,Integer pageSize){
-        //PageHelper.startPage(pageNum,pageSize);
         return bussnessstatusService.ybdydjfindAll(pageNum, pageSize,acard);
     }
     //所有的一般抵押注销业务
     @PostMapping("/ybdyzxfindAll1")
     public PageInfo<Bussnessstatus> ybdyzxfindAll1(String acard,Integer pageNum,Integer pageSize){
-        //PageHelper.startPage(pageNum,pageSize);
         return bussnessstatusService.ybdyzxdjfindAll(pageNum, pageSize,acard);
     }
 }

@@ -30,13 +30,11 @@ public class BusinessController {
     public List findAll(){
         return businessService.findAll();
     }
-
     @GetMapping("/findById")
     public Bussnessstatus findById(String bsid){
         System.out.println(bsid);
         return businessService.findById(bsid);
     }
-
     @GetMapping("/mater")
     public PageInfo<materials> mater( Integer pageNum, Integer pageSize, String key){
         System.out.println(pageNum + "---" + pageSize);

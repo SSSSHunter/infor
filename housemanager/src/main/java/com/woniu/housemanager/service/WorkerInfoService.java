@@ -9,4 +9,6 @@ public interface WorkerInfoService {
     List<WorkerInfo> findAll();
     WorkerInfo findByWid(Integer workid);
     void update(WorkerInfo workerInfo) ;
+
+    WorkerInfo findByUid(Integer uid);
 }

@@ -17,7 +17,6 @@ public class MakewayController {
     //获得方式
     @GetMapping("/findAll")
     public List findAll(){
-        //System.out.println(httpServletRequest.getRequestURL());
         return makewayService.findAll();
     }
 

@@ -35,7 +35,6 @@ public class LoginController {
     @GetMapping("/getZtree")
     public String getTree(HttpServletRequest request){
         String json= (String) request.getSession().getAttribute("json");
-        
         return  json;
     }
     @GetMapping("/findall")

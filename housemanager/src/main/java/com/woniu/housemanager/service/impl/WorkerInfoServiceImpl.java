@@ -2,6 +2,7 @@ package com.woniu.housemanager.service.impl;
 
 import com.woniu.housemanager.mapper.WorkerInfoMapper;
 import com.woniu.housemanager.pojo.WorkerInfo;
+import com.woniu.housemanager.pojo.WorkerInfoExample;
 import com.woniu.housemanager.service.WorkerInfoService;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,15 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
     @Override
     public void update(WorkerInfo workerInfo) {
         workerInfoMapper.updateByPrimaryKeySelective(workerInfo);
+    }
+
+    @Override
+    public WorkerInfo findByUid(Integer uid) {
+        WorkerInfoExample workerInfoExample = new WorkerInfoExample();
+        WorkerInfoExample.Criteria criteria = workerInfoExample.createCriteria();
+        criteria.andUidEqualTo(uid);
+        List<WorkerInfo> l = workerInfoMapper.selectByExample(workerInfoExample);
+        return l.get(0);
     }
 
 

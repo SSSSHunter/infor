@@ -17,18 +17,14 @@ public class BussnesstypeController {
     @Resource
     private BussnesstypeService bussnesstypeService;
 
-    //所有的他项权名
+    //所有的他项权名称
     @GetMapping("/BussnesstypefindAll")
     public List findMortgages(){
-        //System.out.println("11111111111111111111");
         return bussnesstypeService.findAllMortgages();
     }
     //他项权所需材料
     @PostMapping("/MaterialsfindAll")
     public List MaterialsfindAll(String bdname){
-        //bdname= "地役权设立登记";
-        //System.out.println(bdname);
-        //System.out.println(bussnesstypeService.findAllMaterials(bdname));
         return bussnesstypeService.findAllMaterials(bdname);
     }
     //申请

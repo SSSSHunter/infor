@@ -12,7 +12,7 @@ import java.util.List;
  * ClassName:HousePropertyController
  * Package:controller
  * Description:
- *
+ *房屋性质
  * @Date:2020/6/8 20:25
  * @Author:wang
  */

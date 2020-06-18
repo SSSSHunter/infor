@@ -22,12 +22,10 @@ import java.util.List;
 public class BusinessTypeController {
     @Resource
     private BusinessTypeService businessTypeService;
-
     @GetMapping("/findAll")
     private List findAll(){
        return businessTypeService.findAll();
     }
-
     @GetMapping("/findById")
     private Bussnesstype findById(){
         return businessTypeService.findByBtid(1);

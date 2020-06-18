@@ -24,7 +24,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/applicant")
 public class ApplicantController {
-
     @Resource
     private ApplicantService applicantService;
     @Resource
@@ -42,7 +41,6 @@ public class ApplicantController {
         QiuDiHao qiuDiHao, HouseInfo houseInfo, String[] commonway, String[] commonshare) {
         //根据共有人数量添加到数据库
         List<Integer> aid = new ArrayList<>();
-
         for (int i = 0; i < aname.length; i++) {
             Applicant applicant = new Applicant();
             applicant.setAname(aname[i]);
@@ -62,12 +60,10 @@ public class ApplicantController {
             commoninfo.setCommonshare(commonshare[i]);
             commoninfoService.save(commoninfo);
         }
-
         //增加房屋信息
         houseInfo.setQiuid(qiuDiHao.getQiuid());
         houseInfo.setHnid(Integer.parseInt(GenerateCode.getHouseCode()));
         houseInfoService.save(houseInfo);
-
         //增加业务状态表
         String status = "已受理";
         Bussnessstatus bussnessstatus = new Bussnessstatus();
@@ -79,8 +75,6 @@ public class ApplicantController {
         //使用编码生成器自动生成业务号
         bussnessstatus.setBsid(GenerateCode.getBsCode());
         businessService.save(bussnessstatus);
-
-
         return "ok";
     }
 
@@ -93,7 +87,6 @@ public class ApplicantController {
         System.out.println(httpServletRequest.getServletPath() + "---");
         System.out.println(httpServletRequest.getLocalAddr() + "===");
         System.out.println(qiuDiHao.getQiuid() + "---" + qiuDiHao.getQiucard());
-
         return "ok";
     }
 
