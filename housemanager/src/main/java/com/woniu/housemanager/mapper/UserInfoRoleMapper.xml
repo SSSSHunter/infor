@@ -106,6 +106,9 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="findByUid" parameterType="int" resultType="int">
+    select rid from userinforole where uid=#{uid}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="com.woniu.housemanager.pojo.UserInfoRoleKey" >
     <!--
       WARNING - @mbggenerated

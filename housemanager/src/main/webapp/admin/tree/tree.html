@@ -6,12 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <META HTTP-EQUIV="pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+    <META HTTP-EQUIV="expires" CONTENT="0">
+    
 
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="css/doc.min.css">
-	<link rel="stylesheet" href="ztree/zTreeStyle.css">
+	<link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../css/font-awesome.min.css">
+	<link rel="stylesheet" href="../../css/main.css">
+	<link rel="stylesheet" href="../../css/doc.min.css">
+	<link rel="stylesheet" href="../../ztree/zTreeStyle.css">
 	<style>
 	.tree li {
         list-style-type: none;
@@ -41,12 +45,12 @@
     </div>
                   
 			
-    <script src="jquery/jquery-2.1.1.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="script/docs.min.js"></script>
+    <script src="../../jquery/jquery-2.1.1.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../script/docs.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
-	<script src="ztree/jquery.ztree.all-3.5.min.js"></script>
+	<script src="../../ztree/jquery.ztree.all-3.5.min.js"></script>
         
   </body>
 </html>
@@ -55,6 +59,8 @@
     axios.defaults.withCredentials = true;
     beagin();
     function beagin(){
+        
+
         axios.get('http://localhost:9000/tree/getAllTree')
         .then(res => {
                         d = res.data;
@@ -146,9 +152,10 @@
                     }
                     })
                     .then(res => {
+                        beagin();
                     })
             }
-            beagin();
+          
         };
         var vue=new Vue({
             el:"#app",
@@ -175,9 +182,10 @@
                     })
                     .then(res => {
                     this.isshow=false;
-                    })
                     this.init();
                     beagin();
+                    })
+                   
                     }
             },  
             data:{

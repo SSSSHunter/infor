@@ -33,4 +33,16 @@ public class RoleServiceImpl implements RoleService {
     public Role findByRid(Integer rid) {
         return roleMapper.selectByPrimaryKey(rid);
     }
+
+    @Override
+    public List<Role> findByRids(List<Integer> rids) {
+        List<Role> list=roleMapper.findInRole(rids);
+        return list;
+    }
+
+    @Override
+    public List<Role> findNoRids(List<Integer> rids) {
+        List<Role> list=roleMapper.findNoRole(rids);
+        return list;
+    }
 }

@@ -69,4 +69,5 @@ public interface UserInfoRoleMapper {
      * @mbggenerated Sun Jun 07 17:07:39 CST 2020
      */
     int updateByExample(@Param("record") UserInfoRoleKey record, @Param("example") UserInfoRoleExample example);
+    List<Integer> findByUid(Integer uid);
 }

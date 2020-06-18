@@ -111,6 +111,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="findInRole" parameterType="java.util.List" resultType="com.woniu.housemanager.pojo.Role">
+    select * from role where rid in (
+    <foreach collection="rids" item="rid" separator=",">#{rid}</foreach>
+    )
+  </select>
+  <select id="findNoRole" parameterType="java.util.List" resultType="com.woniu.housemanager.pojo.Role">
+    select * from role where rid not in (
+    <foreach collection="rids" item="rid" separator=",">#{rid}</foreach>
+    )
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     <!--
       WARNING - @mbggenerated

@@ -10,7 +10,7 @@
 <body>
     <div id="app">
         <table border="1" width="100%">
-            <tr >
+            <tr  >
                 <td>员工姓名</td>
                 <td>员工性别</td>
                 <td>员工年龄</td>
@@ -20,13 +20,14 @@
                 <td>操作</td>
             </tr>
           
-            <tr v-for="info in wlist" >
+            <tr  v-for="(info,a) in wlist">
               <td>{{info.workname}}</td>
               <td>{{info.worksex}}</td>
               <td>{{info.workage}}</td>
               <td>{{info.workschool}}</td>
               <td>{{info.worklevel}}</td>
               <td>{{info.workphone}}</td>
+              
               <td><a href="" @click.prevent="deleteItem(info.uid)">Delete</a>|
                   <a href="" @click.prevent="findByUid(info.workid)">Update</a></td>
           </tr>
@@ -84,7 +85,7 @@
 </body>
 </html>
 <script>
-     new Vue({
+    var vue=new Vue({
         el:"#app",
         data:{
             workid:null,
@@ -132,13 +133,13 @@
 			})
 			.then(res => {
               this.isshow=false;
-              
+              this.findAll();
+              this.init();
 			})
 			.catch(err => {
 				console.error(err); 
 			})
-            this.findAll();
-            this.init();
+           
            
             },
 
@@ -150,6 +151,7 @@
 			.then(res => {
               this.wlist=res.data.wlist;
               this.ulist=res.data.ulist;
+        
 			})
 			.catch(err => {
 				console.error(err); 
@@ -215,4 +217,5 @@
             }
         },
     })
+    console.log(this.vue.isshow)
 </script>

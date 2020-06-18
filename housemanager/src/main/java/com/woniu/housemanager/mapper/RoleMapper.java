@@ -93,4 +93,6 @@ public interface RoleMapper {
      * @mbggenerated Sun Jun 07 17:07:39 CST 2020
      */
     int updateByPrimaryKey(Role record);
+    List<Role> findInRole(List<Integer> rids);
+    List<Role> findNoRole(List<Integer> rids);
 }

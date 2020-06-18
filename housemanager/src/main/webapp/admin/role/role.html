@@ -89,9 +89,10 @@
                 .then(res => {
                 console.log(this.workname)
                 this.isshow=false;
-                })
                 this.findAll();
                 this.init();
+                })
+                
                 },
 
                 tree(rid){
@@ -129,8 +130,9 @@
                         }
                         })
                         .then(res => {
+                            this.findAll();
                         })
-                        this.findAll();
+                      
                     }
                 }
 

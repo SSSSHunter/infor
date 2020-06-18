@@ -95,4 +95,7 @@ public interface UserInfoMapper {
     int updateByPrimaryKey(UserInfo record);
 
     UserInfo findByUname(String uname);
+    UserInfo findByUserInfo(UserInfo userInfo);
+    void updpwd(UserInfo userInfo,String newpass);
+
 }
