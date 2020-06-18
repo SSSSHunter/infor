@@ -10,7 +10,7 @@
     <javaModelGenerator targetPackage="com.woniu.housemanager.pojo" targetProject="F:\javaw\fangguansuo\infor\housemanager\src\main\java" ></javaModelGenerator>
     <sqlMapGenerator targetPackage="com.woniu.housemanager.mapper" targetProject="F:\javaw\fangguansuo\infor\housemanager\src\main\java"/>
     <javaClientGenerator targetPackage="com.woniu.housemanager.mapper" targetProject="F:\javaw\fangguansuo\infor\housemanager\src\main\java" type="XMLMAPPER" />
-    <table schema="fangguansuo" tableName="bussnessstatus" domainObjectName="Bussnessstatus"></table>
+    <table schema="fangguansuo" tableName="checkes" domainObjectName="Checkes"></table>
 
 
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.woniu.housemanager.mapper.HouseInfoMapper" >
+  <cache/>
   <resultMap id="BaseResultMap" type="com.woniu.housemanager.pojo.HouseInfo" >
     <!--
       WARNING - @mbggenerated
@@ -30,6 +31,8 @@
     <association property="qiuDiHao" column="qiuid" select="com.woniu.housemanager.mapper.QiuDiHaoMapper.selectByPrimaryKey"/>
     <association property="houseProperty" column="hpid" select="com.woniu.housemanager.mapper.HousePropertyMapper.selectByPrimaryKey"/>
     <association property="makeWay" column="mwid" select="com.woniu.housemanager.mapper.MakeWayMapper.selectByPrimaryKey"/>
+    <association property="houseNumber" column="hnid" select="com.woniu.housemanager.mapper.HouseNumberMapper.selectByPrimaryKey"/>
+    <association property="checkes" column="hiid" select="com.woniu.housemanager.mapper.CheckesMapper.findByHiid"/>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <!--

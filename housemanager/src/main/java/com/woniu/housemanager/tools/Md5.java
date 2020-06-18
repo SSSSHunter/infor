@@ -12,8 +12,6 @@ public class Md5 {
         }
         public static String md5(String password) {
             try {
-
-
                 //创建一个消息算法的实例对象
                 MessageDigest md = MessageDigest.getInstance("MD5"); // 计算md5函数
 

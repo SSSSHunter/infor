@@ -1,6 +1,7 @@
 package com.woniu.housemanager.service;
 
 import com.woniu.housemanager.pojo.HouseInfo;
+import com.woniu.housemanager.pojo.HouseNumber;
 
 /**
  * ClassName:HouseInfoService
@@ -12,4 +13,6 @@ import com.woniu.housemanager.pojo.HouseInfo;
  */
 public interface HouseInfoService {
     void save(HouseInfo houseInfo);
+
+    void saveHouseNum(HouseNumber houseNumber);
 }

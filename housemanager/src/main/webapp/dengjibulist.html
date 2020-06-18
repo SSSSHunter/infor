@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+        <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div id="app">
+            <el-input placeholder="请输入登记簿编号进行查询" style="width: 200px;" v-model="condition" clearable>
+            </el-input>
+            <el-button type="success" @click="getbusiness">查询</el-button>
+            <div class="block">
+            <el-table :data="tableData" style="width: 1800px"  border @row-click="show">
+                <el-table-column prop="registercode" label="登记簿编号" width="120">
+                </el-table-column> 
+                <el-table-column prop="houseaddress" label="房屋坐落" width="300">
+                </el-table-column>
+                <el-table-column prop="commonpeople" label="所有权人(份额)" width="150">
+                </el-table-column>
+                <el-table-column prop="qiudihao" label="丘号" width="150">
+                </el-table-column>
+                <el-table-column prop="registerdate" label="登记时间" width="150">
+                </el-table-column>
+                <el-table-column prop="workerInfo.worklevel" label="终审人/登簿人" width="120">
+                </el-table-column>
+            </el-table>
+            <el-pagination background @size-change="handleSizeChange" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
+                    :total="total" @prev-click="toprev" :page-sizes="[5, 10, 15]" :page-size="5"
+                    @next-click="tonext" @current-change="topage">
+                </el-pagination>
+        </div>
+        <script>
+            new Vue({
+                el: "#app",
+                data() {
+                    return {
+                        tableData: [],
+                        total: "",
+                        pageSize: 5,
+                        pageNum: 1,
+                        condition: "",
+                    }
+                },
+                mounted() {
+                    this.getbusiness();
+                },
+                methods: {
+                    getbusiness(){
+                        axios({
+                            method: 'get',
+                            url: "http://localhost:9000/register/findAll",
+                            params: {
+                                pageNum: this.pageNum,
+                                pageSize: this.pageSize,
+                                key: this.condition
+                            }
+                        })
+                            .then(res => {
+                                this.tableData = res.data.list;
+                                this.total = res.data.total;
+                            })
+                            .catch(err => {
+                                console.error(err);
+                            })
+                    },
+                    toprev() {
+                        this.pageNum = this.pageNum - 1;
+                        this.getbusiness();
+                    },
+                    tonext() {
+                        this.pageNum = this.pageNum + 1;
+                        this.getbusiness();
+                    },
+                    topage(val) {
+                        this.pageNum = val;
+                        this.getbusiness();
+                    },
+                    indexMethod(index) {
+                        console.log(index)
+                        return index + (this.pageNum - 1) * this.pageSize + 1;
+                    },
+                    handleSizeChange(val){
+                        this.pageSize = val;
+                        this.getbusiness();
+                    },
+                    show(row, cloumn, event){
+                        var storage = window.sessionStorage;
+                        storage.setItem("bs", JSON.stringify(row))
+
+                        window.location.href="dengjibu.html";
+                        
+                    }
+                },
+            }) 
+        </script>
+    </body>
+
+</html>

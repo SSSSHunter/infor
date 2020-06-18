@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>所有权登记表</title>
+        <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+        <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
+        <link rel="stylesheet" href="layui/css/layui.css">
+    </head>
+
+    <body>
+        <div id="app">
+            <form action="">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr class="layui-bg-blue">
+                            <th colspan="6">
+                                申请人基本信息:
+                            </th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center;">申请人:</td>
+                            <td>
+                                <div class="layui-input-inline">
+                                    <input type="text" v-model="aname[0]" name="aname" required lay-verify="required"
+                                        placeholder="请输入申请人姓名" autocomplete="off" class="layui-input">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">户籍地址:</td>
+                            <td colspan="4">
+                                <div class="layui-input-block">
+                                    <input type="text" v-model="aaddress[0]" name="aaddress" required
+                                        lay-verify="required" placeholder="请输入申请人户籍地址" autocomplete="off"
+                                        class="layui-input">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">联系电话:</td>
+                            <td>
+                                <div class="layui-input-inline">
+                                    <input type="text" v-model="aphone[0]" name="aphone" required lay-verify="required"
+                                        placeholder="请输入联系电话" autocomplete="off" class="layui-input">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">证件号码:</td>
+                            <td colspan="4">
+                                <div class="layui-input-block">
+                                    <input type="text" v-model="acard[0]" name="acard" required lay-verify="required"
+                                        placeholder="请输入证件号码" autocomplete="off" class="layui-input">
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="layui-bg-blue">
+                            <td colspan="6">房产基本信息:</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">区:</td>
+                            <td>
+                                <div>
+                                    <input type="text" name="arename" v-model="arename"
+                                    lay-verify="required"  autocomplete="off" class="layui-input">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">建筑区划:</td>
+                            <td>
+                                <div>
+                                    <input type="text" name="devisionname" v-model="devisionname"
+                                    lay-verify="required"  autocomplete="off" class="layui-input">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">丘地号:</td>
+                            <td>
+
+                                <input type="text" name="qiucard" v-model="qiucard" required lay-verify="required"
+                                    placeholder="请输入丘地号" autocomplete="off" class="layui-input">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">登记种类:</td>
+                            <td>
+                                <div>
+                                    <input type="text" name="bdname" v-model="bdname"
+                                    lay-verify="required" autocomplete="off" class="layui-input">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">房屋性质:</td>
+                            <td>
+                                <div>
+                                    <input type="text" name="hpname" v-model="hpname"
+                                    lay-verify="required" autocomplete="off" class="layui-input">
+                                </div>
+                            </td>
+                            <td style="text-align: center;">取得方式:</td>
+                            <td>
+                                <div>
+                                    <input type="text" name="mwname" v-model="mwname" required
+                                    lay-verify="required" autocomplete="off" class="layui-input">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">房屋坐落:</td>
+                            <td colspan="5">
+
+                                <input type="text" name="houseaddress" v-model="houseaddress" required
+                                    lay-verify="required" autocomplete="off" class="layui-input">
+
+                            </td>
+                        </tr>
+
+                        <tr class="layui-bg-blue">
+                            <td colspan="6">共有人基本信息:</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">共有人姓名</td>
+                            <td style="text-align: center;">证件号码</td>
+                            <td style="text-align: center;">户籍地址</td>
+                            <td style="text-align: center;">共有方式</td>
+                            <td style="text-align: center;">共有份额</td>
+                            <td style="text-align: center;">联系方式</td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                                <input type="text" name="aname" v-model="aname[0]" lay-verify="required"
+                                    placeholder="共有人姓名" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="acard" v-model="acard[0]" lay-verify="required"
+                                    placeholder="证件号码" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="aaddress" v-model="aaddress[0]" lay-verify="required"
+                                    placeholder="户籍地址" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="commonway" v-model="commonway[0]" lay-verify="required"
+                                    placeholder="共有方式" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="commonshare" v-model="commonshare[0]" lay-verify="required"
+                                    placeholder="共有份额" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="aphone" v-model="aphone[0]" lay-verify="required"
+                                    placeholder="联系方式" autocomplete="off" class="layui-input">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                                <input type="text" name="aname" v-model="aname[1]" lay-verify="" placeholder="共有人姓名"
+                                    autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="acard" v-model="acard[1]" lay-verify="" placeholder="证件号码"
+                                    autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="aaddress" v-model="aaddress[1]" lay-verify=""
+                                    placeholder="户籍地址" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="commonway" v-model="commonway[1]" lay-verify=""
+                                    placeholder="共有方式" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="commonshare" v-model="commonshare[1]" lay-verify=""
+                                    placeholder="共有份额" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="aphone" v-model="aphone[1]" lay-verify="" placeholder="联系方式"
+                                    autocomplete="off" class="layui-input">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                                <input type="text" name="aname" v-model="aname[2]" lay-verify="" placeholder="共有人姓名"
+                                    autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="acard" v-model="acard[2]" lay-verify="" placeholder="证件号码"
+                                    autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="aaddress" v-model="aaddress[2]" lay-verify=""
+                                    placeholder="户籍地址" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="commonway" v-model="commonway[2]" lay-verify=""
+                                    placeholder="共有方式" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="commonshare" v-model="commonshare[2]" lay-verify=""
+                                    placeholder="共有份额" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="aphone" v-model="aphone[2]" lay-verify="" placeholder="联系方式"
+                                    autocomplete="off" class="layui-input">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                                <input type="text" name="aname" v-model="aname[3]" lay-verify="" placeholder="共有人姓名"
+                                    autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="acard" v-model="acard[3]" lay-verify="" placeholder="证件号码"
+                                    autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="aaddress" v-model="aaddress[3]" lay-verify=""
+                                    placeholder="户籍地址" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="commonway" v-model="commonway[3]" lay-verify=""
+                                    placeholder="共有方式" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="commonshare" v-model="commonshare[3]" lay-verify=""
+                                    placeholder="共有份额" autocomplete="off" class="layui-input">
+
+                            </td>
+                            <td>
+
+                                <input type="text" name="aphone" v-model="aphone[3]" lay-verify="" placeholder="联系方式"
+                                    autocomplete="off" class="layui-input">
+
+                            </td>
+                        </tr>
+                        <tr class="layui-bg-blue">
+                            <td colspan="6">
+                                校验证件:
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                登记申请书一份：
+                            </td>
+
+                            <td colspan="4">
+                                登记申请书 <a target="_blank" :href="filePath[0]"><el-button type="info" size="small">查看详情</el-button></a>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                申请人身份证复印件一份：
+                            </td>
+                            <td colspan="4">
+                                申请人身份证复印件 <a target="_blank" :href="filePath[1]"><el-button type="info" size="small">查看详情</el-button></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                申请人一寸照片一张：
+                            </td>
+                            <td colspan="4">
+                                申请人一寸照片 <a target="_blank" :href="filePath[2]"><el-button type="info" size="small">查看详情</el-button></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                购房发票复印件一份：
+                            </td>
+                            <td colspan="4">
+                                购房发票复印件 <a target="_blank" :href="filePath[3]"><el-button type="info" size="small">查看详情</el-button></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                购房合同复印件（已备案）一份：
+                            </td>
+                            <td colspan="4">
+                                购房合同复印件 <a target="_blank" :href="filePath[4]"><el-button type="info" size="small">查看详情</el-button></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                契税完税证复印件一份：
+                            </td>
+                            <td colspan="4">
+                                契税完税证复印件 <a target="_blank" :href="filePath[5]"><el-button type="info" size="small">查看详情</el-button></a>
+                            </td>
+                        </tr>
+
+                        
+                    </tbody>
+                </table>
+                <div class="layui-form-item" style="text-align: center;">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">提交审核</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+        <script src="layui/layui.js"></script>
+        <script>
+            layui.use('form', function () {
+                var form = layui.form;
+                form.on('submit(formDemo)', function (data) {
+                    return false;
+                });
+                //各种基于事件的操作，下面会有进一步介绍
+            });
+
+            new Vue({
+                el: "#app",
+                data: {
+                    aname: [],
+                    aaddress: [],
+                    aphone: [],
+                    acard: [],
+                    commonway: [],
+                    commonshare: [],
+                    arename: "",
+                    mwname: "",
+                    devisionname: "",
+                    hpname: "",
+                    houseaddress: "",
+                    bdname: "",
+                    qiucard: "",
+                    hnid: "",
+                    server:"http://localhost:9000/image/",
+                    filePath:[],
+                },
+                mounted() {
+                    var storage = window.sessionStorage;
+                    var info = JSON.parse(storage.getItem("bs"));
+                    this.hnid = info.houseInfo.hnid;
+                    this.arename = info.houseInfo.areas.arename;
+                    this.mwname = info.houseInfo.makeWay.mwname;
+                    this.devisionname = info.houseInfo.devision.devisionname;
+                    this.hpname = info.houseInfo.houseProperty.hpname;
+                    this.houseaddress = info.houseInfo.houseaddress;
+                    this.bdname = info.houseInfo.bunessdetials.bdname;
+                    this.qiucard = info.houseInfo.qiuDiHao.qiucard;
+                    var files = info.houseInfo.checkes;
+                    for(var i =0; i<files.length; i++){
+                        this.filePath.push(this.server+files[i].checkpath);
+                    }
+                    this.getapplicant();
+                    
+                },
+                methods: {
+                    getapplicant(){
+                        axios.get("http://localhost:9000/housePeople/findByhnid",{params:{
+                            hnid: this.hnid,
+                        }})
+                        .then(res => {
+                            for(var i = 0;i<res.data.length;i++){
+                                this.aname.push(res.data[i].applicant.aname);
+                                this.aphone.push(res.data[i].applicant.aphone);
+                                this.acard.push(res.data[i].applicant.acard);
+                                this.aaddress.push(res.data[i].applicant.aadress);
+                                this.commonway.push(res.data[i].applicant.commoninfo.commonway);
+                                this.commonshare.push(res.data[i].applicant.commoninfo.commonshare);
+                            }
+                            console.log(res.data)
+                            
+                        })
+                        .catch(err => {
+                            console.error(err); 
+                        })
+                    },
+
+                }
+            });
+
+
+        </script>
+
+    </body>
+
+</html>

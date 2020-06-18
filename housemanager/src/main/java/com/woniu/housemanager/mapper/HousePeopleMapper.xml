@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.woniu.housemanager.mapper.HousePeopleMapper" >
+  <cache/>
   <resultMap id="BaseResultMap" type="com.woniu.housemanager.pojo.HousePeopleKey" >
     <!--
       WARNING - @mbggenerated
@@ -9,6 +10,7 @@
     -->
     <id column="hnid" property="hnid" jdbcType="INTEGER" />
     <id column="aid" property="aid" jdbcType="INTEGER" />
+    <association property="applicant" column="aid" select="com.woniu.housemanager.mapper.ApplicantMapper.selectByPrimaryKey"/>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <!--
@@ -169,6 +171,9 @@
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
+  </select>
+  <select id="findByhnid" resultMap="BaseResultMap">
+    select * from housepeople where hnid=#{hnid}
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
     <!--

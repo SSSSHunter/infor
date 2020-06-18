@@ -69,4 +69,6 @@ public interface HousePeopleMapper {
      * @mbggenerated Sun Jun 07 17:07:38 CST 2020
      */
     int updateByExample(@Param("record") HousePeopleKey record, @Param("example") HousePeopleExample example);
+
+    List findByhnid(int hnid);
 }
