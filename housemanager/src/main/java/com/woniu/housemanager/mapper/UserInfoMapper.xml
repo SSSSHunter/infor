@@ -127,6 +127,9 @@
     from userinfo
     where uid = #{uid,jdbcType=INTEGER}
   </select>
+  <select id="findByUserInfo"  resultType="com.woniu.housemanager.pojo.UserInfo" parameterType="com.woniu.housemanager.pojo.UserInfo">
+    select * from userinfo where uname=#{uname} and upass=#{upass}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     <!--
       WARNING - @mbggenerated
@@ -229,6 +232,9 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updpwd" parameterType="com.woniu.housemanager.pojo.UserInfo">
+    update userinfo set upass=#{newpass} where uname=#{uname} and upass=#{upass}
   </update>
   <update id="updateByExample" parameterType="map" >
     <!--

@@ -3,9 +3,7 @@ package com.woniu.housemanager.shiro;
 
 import com.woniu.housemanager.pojo.Tree;
 import com.woniu.housemanager.service.TreeService;
-import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -25,21 +23,20 @@ public class ShiroConfiguration {
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
-        factoryBean.setLoginUrl("/index.jsp");
-        factoryBean.setSuccessUrl("/admin/index.jsp");
-        factoryBean.setUnauthorizedUrl("/unauthorized.jsp");
+        factoryBean.setLoginUrl("/login.html");
+        factoryBean.setSuccessUrl("/admin/index.html");
+        factoryBean.setUnauthorizedUrl("/nopermission.html");
         factoryBean.setSecurityManager(securityManager);
 
         Map map = new LinkedHashMap();
 
         map.put("/*", "anon");
-        map.put("/login", "anon");
-        map.put("/index.jsp", "anon");
-        map.put("/static/**", "anon");
+        map.put("/login.html", "anon");
         map.put("/css/**", "anon");
         map.put("/bootstrap/**", "anon");
         map.put("/jquery/**", "anon");
         map.put("/ztree/**", "anon");
+        map.put("/js/**", "anon");
 
 
         List<Tree> trees = treeService.findAll();
@@ -50,8 +47,8 @@ public class ShiroConfiguration {
                 map.put(file+"**", "perms["+file+":**]");
             }
         }
-
         map.put("/admin/**", "authc");
+
 
         factoryBean.setFilterChainDefinitionMap(map);
         return factoryBean;

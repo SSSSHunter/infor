@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+</head>
+<body>
+    <div id="app">
+        <table border="1" width="100%">
+            <tr>
+                <td>原密码：<input @blur="check" v-model="upass" type="password" name="" id=""></td>
+            </tr>
+            <tr>
+                <td>新密码：<input v-model="newpass" type="password" name="" id=""></td>
+            </tr>
+            <tr>
+                <td>确认新密码：<input v-model="newpass1" type="password" name="" id=""></td>
+            </tr>
+            <tr>
+                <td><button @click="updpwd">确认</button></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+<script>
+    var vue=new Vue({
+        el:"#app",
+        data:{
+            uname:window.sessionStorage.getItem("name"),
+            upass:'',
+            newpass:null,
+            newpass1:null,
+            istrue:false,
+            issame:false
+        },
+        methods: {
+            check(){
+                axios({
+				method: 'GET',
+				url: 'http://localhost:9000/userinfo/check',
+				params:{
+					uname:this.uname,
+                    upass:this.upass
+				}
+                })
+                .then(res => {
+                    console.log(res.data);
+                    this.istrue=res.data;
+                })
+            },
+            updpwd(){
+                console.log(this.newpass);
+                console.log(this.newpass1);
+                if(this.newpass==this.newpass1){
+                    this.issame=true;
+                }
+                if(this.newpass!=this.newpass1){
+                    this.issame=false;
+                }
+                if(this.istrue && this.issame && this.newpass!=null && this.newpass!=''){
+                    axios({
+                    method: 'POST',
+                    url: 'http://localhost:9000/userinfo/check',
+                    params:{
+                        uname:this.uname,
+                        upass:this.upass,
+                        newpass:this.newpass
+                    }
+                    })
+                    .then(res =>{
+                        console.log(res.data);
+                    })
+                    console.log("可以xiu")
+                }else if(!this.istrue){
+                    alert("修改失败，原密码不正确")
+                }else if(this.newpass==null || this.newpass==''){
+                    alert("修改失败,请确认新密码")
+                }else if(this.newpass1==null ||this.newpass1==''){
+                    alert("修改失败，请再次输入新密码")
+                }else if(!this.issame){
+                    alert("修改失败，两次密码不一致")
+                }
+                
+            }
+        },
+    })
+    console.log(this.vue.upass);
+</script>

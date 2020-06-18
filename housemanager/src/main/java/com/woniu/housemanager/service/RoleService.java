@@ -10,4 +10,6 @@ public interface RoleService {
     void delete(Integer rid);
     void update(Role role);
     Role findByRid(Integer rid);
+    List<Role> findByRids(List<Integer> rids);
+    List<Role> findNoRids(List<Integer> rids);
 }

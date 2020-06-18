@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../css/font-awesome.min.css">
+	<link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/doc.min.css">
+    <script src="../../jquery/jquery-2.1.1.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../script/docs.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <table border="1" width="100%">
+            <tr  >
+                <td>员工账户</td>
+                <td>账户状态</td>
+                <td>操作</td>
+            </tr>
+          
+            <tr  v-for="(info,a) in ulist">
+              <td>{{info.uname}}</td>
+              <td>{{info.isdelete}}</td>
+             
+              
+              <td>
+                  <a href="" @click.prevent="deleteItem(info.uid)">{{info.isdelete?'OFF':'ON'}}</a>|
+                  <button @click="isshow=true,getrole(info.uid)">职位分配</button></td>
+          </tr>
+        </table>
+        <div v-show="isshow">
+      
+			<div class="panel panel-default">
+			  <div class="panel-body">
+				<form role="form" class="form-inline">
+				  <div class="form-group">
+                    <label for="exampleInputPassword1">未分配角色列表</label><br>
+                    <!-- <select v-model="rid"><option v-for="i in rlist" :value="i.rid">{{i.rname}}</option></select> -->
+					<select v-model="rid" class="form-control" multiple size="10" style="width:100px;overflow-y:auto;">
+                        <option v-for="i in nolist" :value="i.rid">{{i.rname}}</option>
+                      
+                    </select>
+				  </div>
+				  <div class="form-group">
+                        <ul>
+                            <li @click="addrole(rid)" class="btn btn-default glyphicon glyphicon-chevron-right"></li>
+                            <br>
+                            <li @click="delrole(rid)" class="btn btn-default glyphicon glyphicon-chevron-left" style="margin-top:20px;"></li>
+                        </ul>
+				  </div>
+				  <div class="form-group" style="margin-left:40px;">
+					<label for="exampleInputPassword1">已分配角色列表</label><br>
+					<select v-model="rid" class="form-control" multiple size="10" style="width:100px;overflow-y:auto;">
+                        <option v-for="i in inlist" :value="i.rid">{{i.rname}}</option>
+                      
+                    </select>
+				  </div>
+                </form>
+                <button @click="isshow=false">取消</button>
+			  </div>
+			</div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+     new Vue({
+        el:"#app",
+        data:{
+            wlist:null,
+            ulist:null,
+            isshow:false,
+            rlist:null,
+            rid:null,
+            type:'save',
+            trshow:true,
+            ishow:false,
+            inlist:null,
+            nolist:null,
+            uid:null
+        },
+        mounted() {
+            this.findAll();
+
+        },
+        methods: {
+
+   
+
+            findAll(){
+                axios({
+				method: 'GET',
+				url: 'http://localhost:9000/userinfo/findAll',
+			})
+			.then(res => {
+              this.wlist=res.data.wlist;
+              this.ulist=res.data.ulist;
+        
+			})
+			.catch(err => {
+				console.error(err); 
+			})
+            },
+            deleteItem(uid){
+                axios({
+				method: 'POST',
+				url: 'http://localhost:9000/userinfo/isdelete',
+				params:{
+					uid:uid,
+				}
+                })
+                .then(res => {
+                    this.findAll();
+                })
+            },
+            getrole(uid){
+                this.uid=uid;
+                console.log(uid+"+++++++++++");
+                console.log(this.uid+"================");
+                axios({
+				method: 'GET',
+				url: 'http://localhost:9000/role/findByUid',
+				params:{
+					uid:this.uid,
+				}
+                })
+                .then(res => {
+                    this.inlist=res.data.inList;
+                    this.nolist=res.data.noList;
+                
+                })
+            },
+            addrole(rid){
+                axios({
+				method: 'POST',
+				url: 'http://localhost:9000/userinforole/add',
+				params:{
+                    rid:rid[0],
+					uid:this.uid,
+				}
+                })
+                .then(res => {
+                    this.getrole(this.uid);
+                })
+                
+         
+            },
+            delrole(rid){
+                console.log(rid)
+                axios({
+				method: 'POST',
+				url: 'http://localhost:9000/userinforole/del',
+				params:{
+                    rid:rid[0],
+					uid:this.uid,
+				}
+                })
+                .then(res => {
+                    this.getrole(this.uid);
+                })
+               
+            }
+         
+        },
+    })
+</script>

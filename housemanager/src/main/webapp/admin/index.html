@@ -12,10 +12,10 @@ li{
 list-style: none;
 }
 </style>
-<link rel="stylesheet" href="ztree/zTreeStyle.css" type="text/css">
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
-<script type="text/javascript" src="js/jquery.ztree.all-3.5.min.js"></script>
-<script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
+<link rel="stylesheet" href="../ztree/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="../js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="../js/jquery.ztree.core-3.5.js"></script>
 
 
     <SCRIPT type="text/javascript" >
@@ -25,6 +25,7 @@ list-style: none;
             axios.get('http://localhost:9000/getZtree')
                             .then(res => {
                                 zNodes = res.data;
+                                console.log(res.data)
                                 init();    
 
 

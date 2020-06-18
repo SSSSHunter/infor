@@ -2,6 +2,7 @@ package com.woniu.housemanager.controller;
 
 import com.woniu.housemanager.pojo.UserInfo;
 import com.woniu.housemanager.service.UserInfoService;
+import com.woniu.housemanager.tools.Md5;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -20,7 +21,7 @@ public class LoginController {
     @GetMapping("/login")
     public String login( UserInfo info){
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(info.getUname(), info.getUpass());
+        UsernamePasswordToken token = new UsernamePasswordToken(info.getUname(), Md5.md5(info.getUpass()));
         try {
             subject.login(token);
             return "ok";

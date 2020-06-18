@@ -8,4 +8,7 @@ public interface UserInfoService {
     UserInfo findByName(String uname);
     List<UserInfo> findAll();
     void save(UserInfo userInfo);
+    UserInfo findByUserInfo(UserInfo userInfo);
+    void updpwd(UserInfo userInfo);
+    UserInfo findByUid(Integer uid);
 }
