@@ -93,4 +93,6 @@ public interface LouPanManagerMapper {
      * @mbggenerated Sun Jun 07 17:07:39 CST 2020
      */
     int updateByPrimaryKey(LouPanManager record);
+
+
 }

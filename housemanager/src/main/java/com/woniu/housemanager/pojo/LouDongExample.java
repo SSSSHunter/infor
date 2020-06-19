@@ -268,6 +268,10 @@ public class LouDongExample {
             addCriterion("loudongname =", value, "loudongname");
             return (Criteria) this;
         }
+        public Criteria andBuildIdEqualTo(Integer value) {
+            addCriterion("buildingid =", value, "buildingid");
+            return (Criteria) this;
+        }
 
         public Criteria andLoudongnameNotEqualTo(String value) {
             addCriterion("loudongname <>", value, "loudongname");

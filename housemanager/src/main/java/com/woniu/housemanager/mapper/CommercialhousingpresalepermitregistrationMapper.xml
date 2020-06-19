@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.housemanager.mapper.CommercialhousingpresalepermitregistrationMapper">
+  <resultMap id="BaseResultMap" type="com.woniu.housemanager.pojo.Commercialhousingpresalepermitregistration">
+    <id column="ccspid" jdbcType="INTEGER" property="ccspid" />
+    <result column="danweimingcheng" jdbcType="VARCHAR" property="danweimingcheng" />
+    <result column="danweidizhi" jdbcType="VARCHAR" property="danweidizhi" />
+    <result column="farendaibiao" jdbcType="VARCHAR" property="farendaibiao" />
+    <result column="qiyexinzhi" jdbcType="VARCHAR" property="qiyexinzhi" />
+    <result column="zizhidengji" jdbcType="VARCHAR" property="zizhidengji" />
+    <result column="zizhiyouxiaoqi" jdbcType="TIMESTAMP" property="zizhiyouxiaoqi" />
+    <result column="xiangmutuiguanming" jdbcType="VARCHAR" property="xiangmutuiguanming" />
+    <result column="suoshuquwei" jdbcType="VARCHAR" property="suoshuquwei" />
+    <result column="suoshufangwei" jdbcType="VARCHAR" property="suoshufangwei" />
+    <result column="gongchengguihuaxukezhenghao" jdbcType="VARCHAR" property="gongchengguihuaxukezhenghao" />
+    <result column="zongjianzhumianji" jdbcType="VARCHAR" property="zongjianzhumianji" />
+    <result column="churanglouhao" jdbcType="VARCHAR" property="churanglouhao" />
+    <result column="tudishiyongzhenghao" jdbcType="VARCHAR" property="tudishiyongzhenghao" />
+    <result column="shigongxukezhenghao" jdbcType="VARCHAR" property="shigongxukezhenghao" />
+    <result column="gongchengsigongjindu" jdbcType="VARCHAR" property="gongchengsigongjindu" />
+    <result column="kaigongriqi" jdbcType="VARCHAR" property="kaigongriqi" />
+    <result column="jungongriqi" jdbcType="VARCHAR" property="jungongriqi" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ccspid, danweimingcheng, danweidizhi, farendaibiao, qiyexinzhi, zizhidengji, zizhiyouxiaoqi, 
+    xiangmutuiguanming, suoshuquwei, suoshufangwei, gongchengguihuaxukezhenghao, zongjianzhumianji, 
+    churanglouhao, tudishiyongzhenghao, shigongxukezhenghao, gongchengsigongjindu, kaigongriqi, 
+    jungongriqi
+  </sql>
+  <select id="selectByExample" parameterType="com.woniu.housemanager.pojo.CommercialhousingpresalepermitregistrationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from commercialhousingpresalepermitregistration
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from commercialhousingpresalepermitregistration
+    where ccspid = #{ccspid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from commercialhousingpresalepermitregistration
+    where ccspid = #{ccspid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.woniu.housemanager.pojo.CommercialhousingpresalepermitregistrationExample">
+    delete from commercialhousingpresalepermitregistration
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.woniu.housemanager.pojo.Commercialhousingpresalepermitregistration">
+    insert into commercialhousingpresalepermitregistration (ccspid, danweimingcheng, danweidizhi, 
+      farendaibiao, qiyexinzhi, zizhidengji, 
+      zizhiyouxiaoqi, xiangmutuiguanming, suoshuquwei, 
+      suoshufangwei, gongchengguihuaxukezhenghao, 
+      zongjianzhumianji, churanglouhao, tudishiyongzhenghao, 
+      shigongxukezhenghao, gongchengsigongjindu, 
+      kaigongriqi, jungongriqi)
+    values (#{ccspid,jdbcType=INTEGER}, #{danweimingcheng,jdbcType=VARCHAR}, #{danweidizhi,jdbcType=VARCHAR}, 
+      #{farendaibiao,jdbcType=VARCHAR}, #{qiyexinzhi,jdbcType=VARCHAR}, #{zizhidengji,jdbcType=VARCHAR}, 
+      #{zizhiyouxiaoqi,jdbcType=TIMESTAMP}, #{xiangmutuiguanming,jdbcType=VARCHAR}, #{suoshuquwei,jdbcType=VARCHAR}, 
+      #{suoshufangwei,jdbcType=VARCHAR}, #{gongchengguihuaxukezhenghao,jdbcType=VARCHAR}, 
+      #{zongjianzhumianji,jdbcType=VARCHAR}, #{churanglouhao,jdbcType=VARCHAR}, #{tudishiyongzhenghao,jdbcType=VARCHAR}, 
+      #{shigongxukezhenghao,jdbcType=VARCHAR}, #{gongchengsigongjindu,jdbcType=VARCHAR}, 
+      #{kaigongriqi,jdbcType=VARCHAR}, #{jungongriqi,jdbcType=VARCHAR})
+  </insert>
+
+</mapper>

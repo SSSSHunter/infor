@@ -93,4 +93,6 @@ public interface BuildinginfoMapper {
      * @mbggenerated Sun Jun 07 17:07:38 CST 2020
      */
     int updateByPrimaryKey(Buildinginfo record);
+
+    Integer selectByid(String projectname);
 }

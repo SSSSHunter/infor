@@ -209,6 +209,7 @@ public class KaiFaShangExample {
             return (Criteria) this;
         }
 
+
         public Criteria andDiidNotEqualTo(Integer value) {
             addCriterion("diid <>", value, "diid");
             return (Criteria) this;
