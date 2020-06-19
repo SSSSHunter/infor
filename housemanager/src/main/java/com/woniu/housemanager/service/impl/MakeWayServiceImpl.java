@@ -1,7 +1,7 @@
 package com.woniu.housemanager.service.impl;
 
 import com.woniu.housemanager.mapper.MakeWayMapper;
-import com.woniu.housemanager.service.MakeWhyService;
+import com.woniu.housemanager.service.MakeWayService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,7 +16,7 @@ import java.util.List;
  * @Author:wang
  */
 @Service
-public class MakeWhyServiceImpl implements MakeWhyService {
+public class MakeWayServiceImpl implements MakeWayService {
     @Resource
     private MakeWayMapper makeWayMapper;
 

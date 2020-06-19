@@ -1,5 +1,7 @@
 package com.woniu.housemanager.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.woniu.housemanager.pojo.Register;
 import com.woniu.housemanager.service.RegisterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +25,8 @@ public class RegisterController {
     private RegisterService registerService;
 
     @GetMapping("/findAll")
-    public List findAll(){
-        return registerService.findAll();
+    public PageInfo<Register> findAll(Integer pageNum, Integer pageSize, String key){
+        return registerService.findAll(pageNum, pageSize, key);
     }
 
 }

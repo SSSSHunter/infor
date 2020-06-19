@@ -27,8 +27,8 @@ public class BusinessController {
     private MaterialService materialService;
 
     @GetMapping("/findAll")
-    public List findAll(){
-        return businessService.findAll();
+    public PageInfo<Bussnessstatus> findAll( Integer pageNum, Integer pageSize, String key){
+        return businessService.findAll(pageNum, pageSize,key);
     }
     @GetMapping("/findById")
     public Bussnessstatus findById(String bsid){

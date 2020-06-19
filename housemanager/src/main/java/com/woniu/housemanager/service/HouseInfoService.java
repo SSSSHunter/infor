@@ -1,6 +1,7 @@
 package com.woniu.housemanager.service;
 
 import com.woniu.housemanager.pojo.HouseInfo;
+import com.woniu.housemanager.pojo.HouseNumber;
 
 public interface HouseInfoService {
     HouseInfo selectByQiuid(Integer qiuid);
@@ -10,4 +11,6 @@ public interface HouseInfoService {
     HouseInfo selectByHiid(Integer hiid);
 
     void save(HouseInfo houseInfo);
+
+    void saveHouseNum(HouseNumber houseNumber);
 }

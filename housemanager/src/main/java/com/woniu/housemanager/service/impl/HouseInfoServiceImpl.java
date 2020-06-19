@@ -1,8 +1,10 @@
 package com.woniu.housemanager.service.impl;
 
 import com.woniu.housemanager.mapper.HouseInfoMapper;
+import com.woniu.housemanager.mapper.HouseNumberMapper;
 import com.woniu.housemanager.pojo.HouseInfo;
 import com.woniu.housemanager.pojo.HouseInfoExample;
+import com.woniu.housemanager.pojo.HouseNumber;
 import com.woniu.housemanager.service.HouseInfoService;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,9 @@ import java.util.List;
 public class HouseInfoServiceImpl implements HouseInfoService {
     @Resource
     private HouseInfoMapper houseInfoMapper;
+
+    @Resource
+    private HouseNumberMapper houseNumberMapper;
 
     @Override
     public HouseInfo selectByQiuid(Integer qiuid) {
@@ -42,4 +47,9 @@ public class HouseInfoServiceImpl implements HouseInfoService {
         houseInfoMapper.insertSelective(houseInfo);
     }
 
+
+    @Override
+    public void saveHouseNum(HouseNumber houseNumber) {
+        houseNumberMapper.insertSelective(houseNumber);
+    }
 }

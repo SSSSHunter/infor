@@ -1,6 +1,8 @@
 package com.woniu.housemanager.service;
 
-import java.util.List;
+import com.github.pagehelper.PageInfo;
+import com.woniu.housemanager.pojo.Register;
+
 
 /**
  * ClassName:RegisterService
@@ -11,5 +13,5 @@ import java.util.List;
  * @Author:wang
  */
 public interface RegisterService {
-    List findAll();
+    PageInfo<Register> findAll(Integer pageNum, Integer pageSize, String key);
 }

@@ -1,5 +1,6 @@
 package com.woniu.housemanager.service;
 
+import com.github.pagehelper.PageInfo;
 import com.woniu.housemanager.pojo.Bussnessstatus;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @Author:wang
  */
 public interface BusinessService {
-    List<Bussnessstatus> findAll();
+    PageInfo<Bussnessstatus> findAll(Integer pageNum, Integer pageSize, String key);
 
     void save(Bussnessstatus bussnessstatus);
 
