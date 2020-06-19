@@ -10,6 +10,6 @@ import java.util.List;
  * @Date:2020/6/8 20:32
  * @Author:wang
  */
-public interface MakeWayService {
+public interface MakewayService {
     List findAll();
 }

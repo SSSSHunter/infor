@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <title>分户信息表</title>
+    <style>
+      .red{background-color: red;}
+      .grey{background-color: gainsboro;}
+      .blue{background-color: blue;}
+      .green{background-color: chartreuse;}
+      .brown{background-color: brown;}
+      .yellow{background-color: yellow;}
+
+
+  </style>
+</head>
+<body>
+    <div id="app">
+        <table class="layui-table">
+            <colgroup>
+              <col width="150">
+              <col width="200">
+              <col>
+            </colgroup>
+            <thead>
+              <tr>
+                <th>
+                  <select  lay-verify="required" v-model="buildingid1" @change="findAreaByid()">
+                    <option v-for="i in projectname1" :value="i.buildingid">{{i.projectname}}</option>
+                </select>
+                </th>
+                <th>
+                  <select  lay-verify="required" v-model="loudongid" @change="list1()">
+                    <option v-for="i in loudonghao" :value="i.loudongid">{{i.loudongname}}</option>
+                </select>
+                </th>
+                <th :colspan="countRoom">分户信息</th>
+              </tr> 
+              <tr>
+                  <th>楼层</th> 
+                  <th>标号</th>
+                  <td :colspan="countRoom">户室</td>
+              </tr> 
+              <tr v-for="j in countlayer">
+                <th >{{j}}</th>
+                <th >标号</th>
+                
+                <template v-for="i in list">
+                  <template v-if="j==i.currentlayer">
+                        <template v-if="i.colour=='不可售'">
+                          <th v-bind:class="show?'grey':'yellow'"> {{i.hsname}}</th>
+                        </template>
+                        <template v-if="i.colour=='已登记'">
+                          <th v-bind:class="show?'red':'yellow'"> {{i.hsname}}</th>
+                        </template>
+                        <template v-if="i.colour=='初始状态'">
+                          <th v-bind:class="show?'brown':'yellow'"> {{i.hsname}}</th>
+                        </template>
+                        <template v-if="i.colour=='已备案'">
+                          <th v-bind:class="show?'blue':'yellow'"> {{i.hsname}}</th>
+                        </template>
+                        <template v-if="i.colour=='可售'">
+                          <th v-bind:class="show?'green':'yellow'"> {{i.hsname}}</th>
+                        </template>
+                        <template v-if="i.colour=='已售'">
+                          <th v-bind:class="show?'yellow':'yellow'"> {{i.hsname}}</th>
+                        </template>
+                  </template>
+                </template>
+              
+              </tr> 
+            </thead>
+          </table>
+          {{list}}
+          <hr>
+          {{loudongid}}
+          <hr>
+      
+          <hr>
+          {{loudonghao}}
+          
+    </div>
+    
+</body>
+</html>
+<script type="module">
+  
+    new Vue({
+        el:"#app",
+        data:{ 
+            row:2,
+            cosplan:3,
+            list:{},
+            countlayer:1,
+            countRoom:1,
+            show:true,
+            num:1,
+            projectname1:null,
+            buildingid1:null,
+            loudonghao:null,
+            loudongid:null,
+            loudongname:null,
+            },
+        methods: {
+          findAreaByid(){
+            axios({
+                    headers:  {'Content-Type': 'application/x-www-form-urlencoded'},
+                    method:'get',
+                    url: 'http://localhost:9000/Theindividualinformation/showlistloudongcode',
+                    params: {
+                      buildingid:this.buildingid1
+                    }
+                })
+                    .then(res => {
+                        this.loudonghao=res.data;
+                        console.log(res)
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+          },
+          list1(){
+            axios({
+                    headers:  {'Content-Type': 'application/x-www-form-urlencoded'},
+                    method:'get',
+                    url: 'http://localhost:9000/Theindividualinformation/list',
+                    params: {
+                      loudongid:this.loudongid
+                    }
+                })
+            .then(res => {
+               this.list=res.data;
+              this.countlayer=this.list[0].countlayer;
+              this.countRoom=this.list[0].countRoom;
+              console.log(this.list+"=====================================================")
+
+            })
+            .catch(err => {
+              console.error(err); 
+            })
+          },
+          list2(){
+            axios.get("http://localhost:9000//Theindividualinformation//showlistprojectname")
+            .then(res => {
+              this.projectname1=res.data
+              console.log(res)
+            })
+            .catch(err => {
+              console.error(err); 
+            })
+          }
+        },
+        mounted() {
+          this.list2();
+        },
+    })
+</script>

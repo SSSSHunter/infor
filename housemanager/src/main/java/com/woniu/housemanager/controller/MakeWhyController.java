@@ -1,6 +1,6 @@
 package com.woniu.housemanager.controller;
 
-import com.woniu.housemanager.service.MakeWayService;
+import com.woniu.housemanager.service.MakewayService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/makeWhy")
 public class MakeWhyController {
     @Resource
-    private MakeWayService makeWayService;
+    private MakewayService makeWayService;
 
     @GetMapping("/findAll")
     public List findAll(){

@@ -1,8 +1,7 @@
 package com.woniu.housemanager;
 
 
-import com.woniu.housemanager.pojo.UserInfo;
-import com.woniu.housemanager.pojo.WorkerInfo;
+
 import com.woniu.housemanager.service.UserInfoService;
 import com.woniu.housemanager.service.WorkerInfoService;
 import org.junit.jupiter.api.Test;

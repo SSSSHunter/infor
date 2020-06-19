@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开发商信息管理</title>
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div v-show="type=='list'">
+            <!-- ====================查询条件========================================= -->
+           
+            <el-input v-model="condition"  placeholder="请输入公司名称"></el-input>  <el-button icon="el-icon-search" type="primary" @click="findAll()">查询</el-button>
+      
+           <!-- ==================================================================================== -->
+            <el-table :data="list" style="width: 100%" v-model="num">
+                <el-table-column prop="diid" type="diid" label="开发商id" width="180">
+                </el-table-column>
+                <el-table-column prop="companyname" label="公司名称">
+                </el-table-column>
+                <el-table-column prop="companyboss" label="公司老板" width="180">
+                </el-table-column>
+                <el-table-column prop="companycode" label="公司编号">
+                </el-table-column>
+                <el-table-column prop="companyaddress" label="公司地址">
+                </el-table-column>
+                <el-table-column prop="companyphone" label="电话">
+                </el-table-column>
+                <el-table-column prop="companyworkers" label="员工数目">
+                </el-table-column>
+                <el-table-column fixed="right" label="操作" width="100">
+                    <template slot-scope="scope">
+                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                     <!-- ==========================获取行id============================================ -->
+                        <el-button @click="findByid(scope.row.diid)" type="text" size="small">修改</el-button>
+                   <!-- ======================================================================================= -->
+                    </template>
+                </el-table-column>
+            </el-table>
+            <!-- ==================================================分页=========================================== -->
+            <el-pagination   @current-change=" findAll" background layout="prev, pager, next" :total="sum"></el-pagination>
+            <el-button type="primary" plain style="float:right;" @click="save()">新增</el-button>
+        </div>
+        <!-- ========================================================================================= -->
+        <div v-show="type!='list'">
+            <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item label="公司名称">
+                    <el-input v-model="form.companyname"></el-input>
+                </el-form-item>
+                <el-form-item label="公司老板">
+                    <el-input v-model="form.companyboss"></el-input>
+                </el-form-item>
+                <el-form-item label="公司编号">
+                    <el-input v-model="form.companycode"></el-input>
+                </el-form-item>
+                <el-form-item label="公司地址">
+                    <el-input v-model="form.companyaddress"></el-input>
+                </el-form-item>
+                <el-form-item label="电话">
+                    <el-input v-model="form.companyphone"></el-input>
+                </el-form-item>
+                <el-form-item label="员工数目">
+                    <el-input v-model="form.companyworkers"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">提交</el-button>
+                    <el-button>取消</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <!-- ===================================================================================== -->
+       
+    </div>
+</body>
+
+</html>
+<script>
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                list: [],
+                type:'list',//页面切换
+                num:1,
+                sum:1000,
+                condition:null,
+                pager:null,
+                form: {
+                    diid: '',
+                    companyname: '',
+                    companyboss: '',
+                    companycode: '',
+                    companyaddress: '',
+                    companyphone: '',
+                    companyworkers: '',
+                }
+            }
+        },
+        methods: {
+
+            findAll(val) {
+                axios.get('http://localhost:9000/kaifashang/list', {  //params参数必写 , 如果没有参数传{}也可以
+                        params: {  
+                            companyname:this.condition,
+                            number:val
+                            }
+                        })
+                            .then(res => {
+                        this.list = res.data.list;
+                        this.sum=res.data.pages*10
+
+                        console.log(res.data.list+"==============================================")
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+                 },
+            findByid(diid){
+                axios({
+                    headers:  {'Content-Type': 'application/x-www-form-urlencoded'},
+                    method:'get',
+                    url: 'http://localhost:9000/kaifashang/list',
+                    params: {
+                        diid:diid
+                    }
+                })
+                .then(res => {
+                   this.type='update';
+                   this.form.diid=res.data.diid,
+                   this.form.companyname=res.data.companyname,
+                    this.form.companyboss=res.data.companyboss,
+                    this.form.companycode=res.data.companycode,
+                    this.form.companyaddress=res.data.companyaddress,
+                    this.form.companyphone=res.data.catch,
+                    this.form.companyworkers=res.data.companyworkers
+                 
+                })
+               .catch(err => {
+                   console.error(err); 
+               })
+           },
+       
+            save() {
+                this.type="save";
+            },
+            onSubmit() {
+                let path = "http://localhost:9000/kaifashang/save";
+                if (this.type == 'update') {
+                    path = "http://localhost:9000/kaifashang/update";
+                }
+                axios({
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        method: 'post',
+                        url: path,
+                        params: {
+                            diid:this.form.diid,
+                            companyname: this.form.companyname,
+                            companyboss: this.form.companyboss,
+                            companycode: this.form.companycode,
+                            companyaddress: this.form.companyaddress,
+                            companyphone: this.form.companyphone,
+                            companyworkers: this.form.companyworkers
+                        }
+                    })
+                    .then(res => {
+                        this.type='list';
+                        this.findAll();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+                console.log('submit!');
+            }
+        },
+      mounted() {
+          this.findAll();
+      },
+
+    })
+</script>

@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/houseProperty")
-public class HousePropertyController {
+public class HousepropertyController {
     @Resource
     private HousePropertyService housePropertyService;
 

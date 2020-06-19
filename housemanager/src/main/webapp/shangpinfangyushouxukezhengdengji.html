@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品房预售许可证登记</title>
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/qs/6.9.4/qs.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- ======================================one============================== -->
+        <div id="one" v-show="type==one">
+            <form class="layui-form" action="">
+                <table class="layui-table">
+                    <tr>
+                        <td colspan="3">商品房预售许可证申请：</td>
+                    </tr>
+                    <tr>
+                        <td>商品房预售许可证必要文件：</td>
+                        <td colspan="2">
+                            <input type="checkbox" name="" title="商品房预售许可申请表(原件);" checked><br>
+                            <input type="checkbox" name="" title="营业执照正本和副本(复印件);" checked><br>
+                            <input type="checkbox" name="" title="房地产开发资质证书正本和副本(复印件);" checked><br>
+                            <input type="checkbox" name="" title="土地出让合同或建设用地批准书(复印件);" checked><br>
+                        </td>
+                    </tr>
+                </table>
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+                    <div class="layui-upload-list">
+                        <table class="layui-table">
+                            <thead>
+                                <tr>
+                                    <th>文件名</th>
+                                    <th>大小</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="demoList"></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                </div>
+                <div class="layui-form-item" style="text-align: center;">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" @click="doclick()" lay-submit lay-filter="formDemo">立即提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- =================================================================================== -->
+        <!-- ===========================================two======================================= -->
+        <div id="two" v-show="type=='two'">
+            <table class="layui-bg-table">
+                <!-- <colgroup>
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup> -->
+                <tr>
+                    <th colspan="6" class="layui-bg-red">建设单位情况</th>
+                </tr>
+                <tr class="layui-bg-blue">
+                    <th>单位名称</th>
+                    <th>单位地址</th>
+                    <th>法人代表</th>
+                    <th>企业性质</th>
+                    <th>资质等级</th>
+                    <th>资质有效期</th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" v-model="danweimingcheng" name="title" required lay-verify="required"
+                            class="layui-input">
+                    </td>
+                    <td>
+                        <input type="text" v-model="danweidizhi" name="title" required lay-verify="required"
+                            class="layui-input">
+                    </td>
+                    <td>
+                        <input type="text" v-model="farendaibiao" name="title" required lay-verify="required"
+                            class="layui-input">
+                    </td>
+                    <td>
+                        <input type="text" v-model="qiyexinzhi" name="title" required lay-verify="required"
+                            class="layui-input">
+                    </td>
+                    <td>
+                        <input type="text" v-model="zizhidengji" name="title" required lay-verify="required"
+                            class="layui-input">
+                    </td>
+                    <td>
+                        <input type="datetime-local" v-model="zizhiyouxiaoqi" name="title" required
+                            lay-verify="required" class="layui-input" id="test1">
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="6" class="layui-bg-red">建设项目总情况</th>
+                </tr>
+                <tr class="layui-bg-orange">
+                    <td>建设项目名称</td>
+                    <td colspan="2"><input type="text" v-model="jianshexiangmumingcheng" name="title" required
+                            lay-verify="required" class="layui-input"></td>
+                    <td>项目推广名</td>
+                    <td colspan="2"><input type="text" v-model="xiangmutuiguanming" name="title" required
+                            lay-verify="required" class="layui-input"></td>
+                </tr>
+                <tr>
+                    <th colspan="6" class="layui-bg-red">项目坐落</th>
+                </tr>
+                <tr class="layui-bg-orange">
+                    <td>所属区位</td>
+                    <td colspan="2"><input type="text" v-model="suoshuquwei" name="title" required lay-verify="required"
+                            class="layui-input"></td>
+                    <td>所属方位</td>
+                    <td colspan="2"><input type="text" v-model="suoshufangwei" name="title" required
+                            lay-verify="required" class="layui-input"></td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="layui-bg-red">本次申请房预售情况</td>
+
+
+                </tr>
+                <tr class="layui-bg-orange">
+                    <td>工程规划证号</td>
+                    <td colspan="2"><input v-model="gongchengguihuaxukezhenghao" type="text" name="title" required
+                            lay-verify="required" class="layui-input"></td>
+                    <td>总建筑面积</td>
+                    <td colspan="2"><input v-model="zongjianzhumianji" type="text" name="title" required
+                            lay-verify="required" class="layui-input"></td>
+                </tr>
+                <tr class="layui-bg-orange">
+                    <td>出让楼号</td>
+                    <td colspan="5"><input v-model="churanglouhao" type="text" name="title" required
+                            lay-verify="required" class="layui-input"></td>
+                </tr>
+                <tr class="layui-bg-orange">
+                    <td>土地使用证号</td>
+                    <td colspan="2"><input type="text" v-model="tudishiyongzhenghao" name="title" required
+                            lay-verify="required" class="layui-input"></td>
+                    <td>施工许可证号</td>
+                    <td colspan="2"><input type="text" v-model="shigongxukezhenghao" name="title" required
+                            lay-verify="required" class="layui-input"></td>
+                </tr>
+                <tr class="layui-bg-orange">
+                    <td>工程施工进度</td>
+                    <td colspan="5"><input type="text" v-model="gongchengsigongjindu" name="title" required
+                            lay-verify="required" class="layui-input"></td>
+                </tr>
+                <tr class="layui-bg-orange">
+                    <td>开工日期</td>
+                    <td colspan="2"><input type="text" v-model="kaigongriqi" name="title" required lay-verify="required"
+                            class="layui-input"></td>
+                    <td>竣工日期</td>
+                    <td colspan="2"><input type="text" v-model="jungongriqi" name="title" required lay-verify="required"
+                            class="layui-input"></td>
+                </tr>
+                <tr class="layui-bg-orange">
+                    <td>申请预售楼号</td>
+                    <td colspan="5">
+                        <input type="text" name="title" v-model="shenqingyushoulouhao" required lay-verify="required"
+                            class="layui-input"></td>
+                </tr>
+                <tr class="layui-bg-orange">
+                    <td>栋数</td>
+                    <td colspan="2">
+                        <input type="text" name="title" v-model="dongshu" required lay-verify="required"
+                            class="layui-input"></td>
+                    <td>套数</td>
+                    <td colspan="2"><input type="text" name="title" v-model="taoshu" required lay-verify="required"
+                            class="layui-input"></td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <button class="layui-btn" @click="dosave()" style="float:right;">提交</button>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <!-- =================================================================================== -->
+       
+    </div>
+    <script src="layui/layui.js"></script>
+    <script>
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('submit(formDemo)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+
+        });
+        // ===============================================
+        layui.use('upload', function () {
+            var $ = layui.jquery,
+                upload = layui.upload;
+            //多文件列表示例
+            var demoListView = $('#demoList'),
+                uploadListIns = upload.render({
+                    elem: '#testList',
+                    url: 'https://httpbin.org/post' //改成您自己的上传接口
+                        ,
+                    accept: 'file',
+                    multiple: true,
+                    auto: false,
+                    bindAction: '#testListAction',
+                    choose: function (obj) {
+                        var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                        //读取本地文件
+                        obj.preview(function (index, file, result) {
+                            var tr = $(['<tr id="upload-' + index + '">', '<td>' + file.name +
+                                '</td>', '<td>' + (file.size / 1024).toFixed(1) +
+                                'kb</td>', '<td>等待上传</td>', '<td>',
+                                '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>',
+                                '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>',
+                                '</td>', '</tr>'
+                            ].join(''));
+                            //删除
+                            tr.find('.demo-delete').on('click', function () {
+                                delete files[index]; //删除对应的文件
+                                tr.remove();
+                                uploadListIns.config.elem.next()[0].value =
+                                    ''; //清空 input file 值，以免删除后出现同名文件不可选
+                            });
+
+                            demoListView.append(tr);
+                        });
+                    },
+                    done: function (res, index, upload) {
+                        if (res.files.file) { //上传成功
+                            var tr = demoListView.find('tr#upload-' + index),
+                                tds = tr.children();
+                            tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                            tds.eq(3).html(''); //清空操作
+                            return delete this.files[index]; //删除文件队列已经上传成功的文件
+                        }
+                        this.error(index, upload);
+                    },
+                    error: function (index, upload) {
+                        var tr = demoListView.find('tr#upload-' + index),
+                            tds = tr.children();
+                        tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                        tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                    }
+                });
+        });
+        // ====================================================================================
+        new Vue({
+            el: "#app",
+            data: {
+                type: one,
+                danweimingcheng: null,
+                danweidizhi: null,
+                farendaibiao: null,
+                qiyexinzhi: null,
+                zizhidengji: null,
+                jianshexiangmumingcheng: null,
+                zizhiyouxiaoqi: null,
+                xiangmutuiguanming: null,
+                suoshuquwei: null,
+                suoshufangwei: null,
+                gongchengguihuaxukezhenghao: null,
+                zongjianzhumianji: null,
+                churanglouhao: null,
+                tudishiyongzhenghao: null,
+                shigongxukezhenghao: null,
+                gongchengsigongjindu: null,
+                kaigongriqi: null,
+                jungongriqi: null,
+                shenqingyushoulouhao: null,
+                dongshu: null,
+                taoshu: null,
+                projectname1: null,
+                buildingid1: null
+            },
+            methods: {
+            
+                doclick() {
+                    this.type = "two";
+                },
+                findAreaByid() {
+                    axios({
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            method: 'get',
+                            url: 'http://localhost:9000/Theindividualinformation/showlistloudongcode',
+                            params: {
+                                buildingid: this.buildingid1
+                            }
+                        })
+                        .then(res => {
+                            this.loudonghao = res.data;
+                            console.log(res)
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+                dosave() {
+                    axios({
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            method: 'post',
+                            url: "http://localhost:9000/shangpinfangyushoudengji/save",
+                            params: {
+                                danweimingcheng: this.danweimingcheng,
+                                danweidizhi: this.danweidizhi,
+                                farendaibiao: this.farendaibiao,
+                                qiyexinzhi: this.qiyexinzhi,
+                                zizhidengji: this.zizhidengji,
+                                jianshexiangmumingcheng: this.jianshexiangmumingcheng,
+                                zizhiyouxiaoqi: this.zizhiyouxiaoqi,
+                                xiangmutuiguanming: this.xiangmutuiguanming,
+                                suoshuquwei: this.suoshuquwei,
+                                suoshufangwei: this.suoshufangwei,
+                                gongchengguihuaxukezhenghao: this.gongchengguihuaxukezhenghao,
+                                zongjianzhumianji: this.zongjianzhumianji,
+                                churanglouhao: this.churanglouhao,
+                                tudishiyongzhenghao: this.tudishiyongzhenghao,
+                                shigongxukezhenghao: this.shigongxukezhenghao,
+                                gongchengsigongjindu: this.gongchengsigongjindu,
+                                kaigongriqi: this.kaigongriqi,
+                                jungongriqi: this.jungongriqi,
+                                shenqingyushoulouhao: this.shenqingyushoulouhao,
+                                dongshu: this.dongshu,
+                                taoshu: this.taoshu
+                            }
+                        })
+                        .then(res => {
+                            alert(res.data);
+                            console.log(res.data + "===============================")
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+            },
+           
+        });
+    </script>
+
+</body>
+
+</html>

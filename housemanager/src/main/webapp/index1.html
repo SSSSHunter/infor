@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+   
+   
+    <title>开发商信息录入</title>
+</head>
+
+<body>
+    <div id="row1">
+       
+        <table class="layui-table">
+            <colgroup>
+                <col width="150">
+                <col width="200">
+                <col>
+            </colgroup>
+            <thead>
+                <tr>
+                    <th colspan="6" class="layui-bg-red">楼盘基本信息：</th>
+                </tr>
+                <tr>
+                    <th>建设单位：</th>
+                    <td><input type="text" v-model="companyname"name="title" required lay-verify="required" class="layui-input"></td>
+                    <th>项目名称</th>
+                    <td><input type="text" v-model="projectname"name="title" required lay-verify="required" class="layui-input"></td>
+                    <th>土地用途</th>
+                    <td>
+                        <select  lay-verify="required"v-model="lsid">
+                            <option v-for="i in lulist"  :value="i.lsid">{{i.lsname}}</option>
+
+                        </select>
+                    </td>
+                     
+                </tr>
+                <tr>
+                    <th>土地权属：</th>
+                    <td>
+                        <select  lay-verify="required" v-model="lpid">
+                            <template v-for="i in lplist">
+                                <option :value="i.lpid">{{i.lpname}}</option>
+                            </template>
+                         
+                        </select>
+                    </td>
+                    <th>房屋性质：</th>
+                    <td>
+                        <select  lay-verify="required" v-model="hpid">
+                            <option v-for="i in hplist"  :value="i.hpid">{{i.hpname}}</option>
+
+                        </select>
+                    </td>
+                    <th>设计用途：</th>
+                    <td>
+                        <select  lay-verify="required" v-model="purposeid">
+                            <option v-for="i in pplist"  :value="i.purposeid">{{i.purposename}}</option>
+
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>区：</th>
+                    <td>
+                        <select name="areaid" lay-verify="required"v-model="areaid" @change="findAreaByid()">
+                          
+                            <option v-for="i in list" :value="i.areaid">{{i.arename}}</option>
+
+                        </select>
+                    </td>
+                    <th>建筑区划：</th>
+                    <td>
+                        <select name="city" lay-verify="required" v-model="devisionid">
+                            <option v-for="j in dlist":value="j.devisionid">{{j.devisionname}}</option>
+                        </select>
+                    </td>
+                    <th>丘地号：</th>
+                    <td><input type="text" v-model="qiucard"  required lay-verify="required" class="layui-input"></td>
+                </tr>
+                <tr>
+                    <th>土地证号：</th>
+                    <td><input v-model="landcode"type="text" name="title" required lay-verify="required" class="layui-input"></td>
+                    <th>房屋结构</th>
+                    <td>
+                        <select name="areaid" lay-verify="required"v-model="structureid">
+                            <option v-for="i in slist"  :value="i.structureid">{{i.structurename}}</option>
+
+                        </select>
+                    </td>
+                    <th>取得方式</th>
+                    <td>
+                        <select  lay-verify="required"v-model="mwid">
+                            <option v-for="i in mwlist"  :value="i.mwid">{{i.mwname}}</option>
+
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>房屋坐落：</th>
+                    <td colspan="3"><input v-model="houseaddress" type="text" name="title" required lay-verify="required" class="layui-input">
+                    </td>
+                    <th>分户图：</th>
+                </tr>
+                <tr>
+                    <th colspan="6" class="layui-bg-blue">楼栋信息：</th>
+                </tr>
+                <tr>
+                    <th>楼栋名称：</th>
+                    <th>幢编号：</th>
+                    <th>总层数：</th>
+                    <th>分户房屋（套）：</th>
+                    <th>幢总面积（平方）：</th>
+                    <th>备注：</th>
+                </tr>
+                <tr v-for="i in sum">
+                    <td><input type="text"v-model="loudongname[i]" name="title" required lay-verify="required" class="layui-input"></td>
+                    <td><input type="text" v-model="loudongcode[i]" name="title" required lay-verify="required" class="layui-input"></td>
+                    <td><input type="text" v-model="countlayer[i]" name="title" required lay-verify="required" class="layui-input"></td>
+                    <td><input type="text" v-model="counthouses[i]" name="title" required lay-verify="required" class="layui-input"></td>
+                    <td><input type="text" v-model="countarea[i]" name="title" required lay-verify="required" class="layui-input"></td>
+                    <td><input type="text" v-model="info[i]"name="title" required lay-verify="required" class="layui-input"></td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                   
+                        <button type="button" @click="increase()" class="layui-btn" style="float:right;">增加行</button>
+                  
+                        <button type="button" @click="reduce()" class="layui-btn" style="float:right;">删除行</>
+                 
+                        <button class="layui-btn"v-if="ci==0" @click="dosave()"style="float:right;">提交楼盘信息</button>
+                    
+                        <button class="layui-btn"v-if="ci==1" @click="dosave1()"style="float:right;">提交楼栋信息</button>
+                    
+                        <button class="layui-btn"v-if="ci==2" @click="skip()"style="float:right;">房间编号录入</button>
+                       
+                    </td>
+                </tr>
+            </thead>
+        </table>
+     
+    </div>
+
+
+
+</body>
+</html>
+<script>
+    var vm=new Vue({
+        el: "#row1",
+        data: {
+            sum: 1,
+            list: null, //接受展示返回的数据
+            dlist:null,//接受返回的区划
+            slist:null,//接受房屋性质
+            lulist:1,//土地用途
+            mwlist:1,//取得方式
+            hplist:1,//房屋性质
+            lplist:1,//土地权属
+            pplist:null,//计划用途
+            companyname:null,//建设单位
+            projectname:null,//项目名称
+            lsid:null,//土地用途id
+            lpid:null,//土地权属
+            hpid:null,//房屋性质
+            purposeid:null,//设计用途
+            areaid:1,//区id
+            devisionid:null,//建筑区划
+           qiucard:null,//丘地号
+            landcode:null,//土地证号
+            structureid:null,//房屋结构
+            mwid:null,//取得方式
+            houseaddress:null,//房屋坐落
+            // // loudongname:null,//楼栋名称
+            // loudongcode:null,//楼栋编号
+            // countlayer:null,//总层数
+            // counthouses:null,//分户房屋
+            // countarea:null,//总面积
+            // info:null,//备注
+            loudongname:[],
+            loudongcode:[],
+            countlayer:[],
+            counthouses:[],
+            countarea:[],
+            info:[],
+            num:null,
+            ci:0,
+            flag:true,
+            avg:1,
+            qwe:null
+          
+          
+           
+        },
+        
+        methods: {
+            skip(){
+                window.location.href="Roomnumberentry.html"
+            },
+            // 表格增加
+            increase() {
+                this.sum = this.sum + 1;
+
+            },
+            //表格减少
+            reduce() {
+                if (this.sum > 1) {
+                    this.sum = this.sum - 1;
+                }
+
+            },
+            //获得所有区
+            arealist() {
+                axios.get("http://localhost:9000/findAllArea")
+                    .then(res => {
+                        this.list = res.data;
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            },
+            dosave() {
+                if(this.ci==0){
+               this.ci=this.ci+1;}
+          
+                axios({
+                    headers:  {'Content-Type': 'application/x-www-form-urlencoded'},
+                    method:'post',
+                    url: "http://localhost:9000/save1",
+                    params: {
+                        companyname:this.companyname,
+                        projectname:this.projectname,
+                        lsid:this.lsid,
+                        lpid:this.lpid,
+                        hpid:this.hpid,
+                        qiucard:this.qiucard,
+                        purposeid:this.purposeid,
+                        areaid:this.areaid,
+                        devisionid:this.devisionid,
+                        landcode:this.landcode,
+                        structureid:this.structureid,
+                        mwid:this.mwid,
+                        houseaddress:this.houseaddress, 
+                    }
+                }) 
+              
+                .then(res => {
+                   this.num=res.data;
+                 
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+            },
+            
+            dosave1(){
+                if(this.ci==1){
+               this.ci=this.ci+1;}
+                let params = new URLSearchParams;
+                params.append('loudongname',this.loudongname);
+                params.append('loudongcode',this.loudongcode);
+                params.append('countlayer',this.countlayer);
+                params.append('counthouses',this.counthouses);
+                params.append('countarea',this.countarea);
+                params.append('info',this.info);
+                params.append('companyname',this.companyname);
+                params.append("num1",this.num)
+                alert(params)
+             axios({
+                headers:  {'Content-Type': 'application/x-www-form-urlencoded'},
+                method:'post',
+                url: "http://localhost:9000/save",
+                data:params
+            })
+            .then(res => {
+                this.qwe=res.data;
+                        console.log(res.data+"===========================================")
+                    })
+            },
+          
+            //传递区id，获取对应的区域
+            findAreaByid() {
+                axios({
+                    headers:  {'Content-Type': 'application/x-www-form-urlencoded'},
+                    method:'get',
+                    url: 'http://localhost:9000/findAreaByid',
+                    params: {
+                        areaid: this.areaid
+                    }
+                })
+                    .then(res => {
+                        this.dlist=res.data;
+                        console.log(res)
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            },
+            //获得房屋性质
+            structureList(){
+                axios.get("http://localhost:9000//StructureList")
+                .then(res => {
+                    this.slist=res.data;
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+            },
+            //土地用途
+            landuserlist(){
+                axios.get("http://localhost:9000/LandUser")
+                .then(res => {
+                    this.lulist=res.data;
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+            },
+            //取得方式
+            makewaylist(){
+                axios.get("http://localhost:9000/MakeWay")
+                .then(res => {
+                    this.mwlist=res.data;
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+            },
+            //房屋性质
+            housepropertylist(){
+                axios.get("http://localhost:9000/HouseProperty")
+                .then(res => {
+                    this.hplist=res.data;
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+            },
+            //计划用途
+            planpropertylist(){
+                axios.get("http://localhost:9000/PlanProperty")
+                .then(res => {
+                    this.pplist=res.data;
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+            },
+            //土地权属
+            landpropertylist(){
+                axios.get("http://localhost:9000/LandProperty")
+                .then(res => {
+                    this.lplist=res.data;
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+            }
+        },
+        mounted() { //页面加载完执行
+            //展示
+            this.arealist();
+            this.structureList();
+            this.landuserlist();
+            this.makewaylist();
+            this.findAreaByid();
+            this.housepropertylist();
+            this.landpropertylist();
+            this.planpropertylist();
+        }
+    })
+</script>
