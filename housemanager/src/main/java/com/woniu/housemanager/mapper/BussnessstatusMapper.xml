@@ -348,4 +348,67 @@
       acard = #{acard,jdbcType=VARCHAR}
     where bsid = #{bsid,jdbcType=VARCHAR}
   </update>
+
+  <select id="ybdydjfindAll" resultMap="BaseResultMap">
+    SELECT * FROM bussnessstatus
+    JOIN mortgage
+    ON mortgage.`mortgageid`=bussnessstatus.`mortgageid`
+    JOIN bunessdetials
+    ON bunessdetials.`bdid`= mortgage.`bdid`
+    JOIN workerinfo
+    ON workerinfo.`workid`=bussnessstatus.`workid`
+    AND bsstatus = '已受理'
+    AND bunessdetials.bdid=25
+    <if test="acard!=null">
+      AND acard LIKE CONCAT('%', #{acard}, '%')
+    </if>
+  </select>
+
+
+  <select id="ybdyzydjfindAll" resultMap="BaseResultMap">
+    SELECT * FROM bussnessstatus
+    JOIN mortgage
+    ON mortgage.`mortgageid`=bussnessstatus.`mortgageid`
+    JOIN bunessdetials
+    ON bunessdetials.`bdid`= mortgage.`bdid`
+    JOIN workerinfo
+    ON workerinfo.`workid`=bussnessstatus.`workid`
+    AND bsstatus = '已受理'
+    AND bunessdetials.bdid=39
+    <if test="acard!=null">
+      AND acard LIKE CONCAT('%', #{acard}, '%')
+    </if>
+  </select>
+
+
+  <select id="ybdybgdjfindAll" resultMap="BaseResultMap">
+    SELECT * FROM bussnessstatus
+    JOIN mortgage
+    ON mortgage.`mortgageid`=bussnessstatus.`mortgageid`
+    JOIN bunessdetials
+    ON bunessdetials.`bdid`= mortgage.`bdid`
+    JOIN workerinfo
+    ON workerinfo.`workid`=bussnessstatus.`workid`
+    AND bsstatus = '已受理'
+    AND bunessdetials.bdid=32
+    <if test="acard!=null">
+      AND acard LIKE CONCAT('%', #{acard}, '%')
+    </if>
+  </select>
+
+
+  <select id="ybdyzxdjfindAll" resultMap="BaseResultMap">
+    SELECT * FROM bussnessstatus
+    JOIN mortgage
+    ON mortgage.`mortgageid`=bussnessstatus.`mortgageid`
+    JOIN bunessdetials
+    ON bunessdetials.`bdid`= mortgage.`bdid`
+    JOIN workerinfo
+    ON workerinfo.`workid`=bussnessstatus.`workid`
+    AND bsstatus = '已受理'
+    AND bunessdetials.bdid=46
+    <if test="acard!=null">
+      AND acard LIKE CONCAT('%', #{acard}, '%')
+    </if>
+  </select>
 </mapper>

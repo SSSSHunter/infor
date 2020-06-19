@@ -55,11 +55,11 @@ public class ApplicantController {
             applicant.setAcard(acard[i]);
             applicant.setAphone(aphone[i]);
             applicant.setAadress(aaddress[i]);
-            applicantService.save(applicant);
+            applicantService.insert(applicant);
             aid.add(applicant.getAid());
         }
         //增加丘地号
-        qiuDiHaoService.save(qiuDiHao);
+        qiuDiHaoService.insert(qiuDiHao);
         //增加共有人信息
         for (int i = 0; i < aid.size(); i++) {
             Commoninfo commoninfo = new Commoninfo();
