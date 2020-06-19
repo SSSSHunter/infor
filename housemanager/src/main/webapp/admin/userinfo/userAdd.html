@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <table border="1" width="100%">
+            <tr  >
+                <td>员工姓名</td>
+                <td>员工性别</td>
+                <td>员工年龄</td>
+                <td>员工学校</td>
+                <td>最高学历</td>
+                <td>联系方式</td>
+                <td>操作</td>
+            </tr>
+          
+            <tr  v-for="(info,a) in wlist">
+              <td>{{info.workname}}</td>
+              <td>{{info.worksex}}</td>
+              <td>{{info.workage}}</td>
+              <td>{{info.workschool}}</td>
+              <td>{{info.worklevel}}</td>
+              <td>{{info.workphone}}</td>
+              
+              <td><a href="" @click.prevent="deleteItem(info.uid)">Delete</a>|
+                  <a href="" @click.prevent="findByUid(info.workid)">Update</a></td>
+          </tr>
+        </table>
+        <table v-show="isshow" border="1" width="100%">
+        <tr>
+            <td>
+                员工姓名：<input v-model="workname" type="text" name="" id="" placeholder="请输入员工姓名">
+            </td>
+        </tr>
+        <tr v-show="trshow">
+            <td>
+                登陆账号：<input v-model="uname" type="text" name="" id="" placeholder="请输入要注册登陆账号">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                员工性别：<input v-model="worksex" type="text" name="" id="" placeholder="请输入员工性别">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                员工年龄：<input v-model="workage" type="text" name="" id="" placeholder="请输入年龄">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                毕业学校：<input v-model="workschool" type="text" name="" id="" placeholder="请输入毕业院校">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                最高学历：<input v-model="worklevel" type="text" name="" id="" placeholder="请输入最高学历">
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                联系电话：<input v-model="workphone" type="text" name="" id="" placeholder="请输入联系电话">
+            </td>
+        </tr>
+        <tr v-show="trshow">
+            <td>
+                担任职位：<select v-model="rid"><option v-for="i in rlist" :value="i.rid">{{i.rname}}</option></select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+               <button @click="save" >{{type=='save'?'增加':'修改'}}</button><button @click="isshow=false" >取消</button>
+            </td>
+        </tr>
+        </table>
+        <button @click="isshow=true,trshow=true,type='save',init()">添加</button>
+    </div>
+</body>
+</html>
+<script>
+    var vue=new Vue({
+        el:"#app",
+        data:{
+            workid:null,
+            workname:null,
+            uname:null,
+            worksex:null,
+            workage:null,
+            workschool:null,
+            worklevel:null,
+            workphone:null,
+            type:null,
+            wlist:null,
+            ulist:null,
+            isshow:false,
+            rlist:null,
+            rid:null,
+            type:'save',
+            trshow:true
+        },
+        mounted() {
+            this.findAll();
+            this.findAllRole();
+        },
+        methods: {
+
+            save(){
+            let path="http://localhost:9000/userinfo/save";
+            if(this.type!='save'){
+                path="http://localhost:9000/userinfo/update";
+            }
+            axios({
+				method: 'POST',
+				url: path,
+				params:{
+                    workid:this.workid,
+					uname:this.uname,
+                    workname:this.workname,
+                    worksex:this.worksex,
+                    workage:this.workage,
+                    workschool:this.workschool,
+                    worklevel:this.worklevel,
+                    workphone:this.workphone,
+                    rid:this.rid
+				},
+			})
+			.then(res => {
+              this.isshow=false;
+              this.findAll();
+              this.init();
+			})
+			.catch(err => {
+				console.error(err); 
+			})
+           
+           
+            },
+
+            findAll(){
+                axios({
+				method: 'GET',
+				url: 'http://localhost:9000/userinfo/findAll',
+			})
+			.then(res => {
+              this.wlist=res.data.wlist;
+              this.ulist=res.data.ulist;
+        
+			})
+			.catch(err => {
+				console.error(err); 
+			})
+            },
+
+            findAllRole(){
+                axios({
+				method: 'GET',
+				url: 'http://localhost:9000/role/findAll',
+			})
+			.then(res => {
+              this.rlist=res.data;
+			})
+			.catch(err => {
+				console.error(err); 
+			})
+            },
+            init(){
+                this.workname=null,
+                this.uname=null,
+                this.worksex=null,
+                this.workage=null,
+                this.workschool=null,
+                this.worklevel=null,
+                this.workphone=null
+            },
+            deleteItem(uid){
+                axios({
+				method: 'POST',
+				url: 'http://localhost:9000/role/delete',
+				params:{
+					uid:uid,
+				}
+                })
+                .then(res => {
+                console.log(this.workname)
+                this.isshow=false;
+                })
+            },
+            findByUid(uid){
+                console.log(uid);
+                this.isshow=true;
+                this.trshow=false;
+                axios({
+				method: 'GET',
+				url: 'http://localhost:9000/userinfo/findByWid',
+				params:{
+					workid:uid,
+				}
+                })
+                .then(res => {
+                    console.log(res.data.workname)
+                    this.workid=res.data.workid,
+                    this.workname=res.data.workname,
+                    this.worksex=res.data.worksex,
+                    this.workage=res.data.workage,
+                    this.workschool=res.data.workschool,
+                    this.worklevel=res.data.worklevel,
+                    this.workphone=res.data.workphone,
+                    this.type='a'
+                })
+            }
+        },
+    })
+    console.log(this.vue.isshow)
+</script>

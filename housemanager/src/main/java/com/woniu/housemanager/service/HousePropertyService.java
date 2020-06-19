@@ -8,4 +8,5 @@ import java.util.List;
  */
 public interface HousePropertyService {
     List HouseProperty();
+    List findAll();
 }

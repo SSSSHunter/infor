@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>一般抵押注销登记业务状态表</title>
+        <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+        <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div style="text-align: center" class="page-header">
+            <h1>一般抵押注销登记
+                <small>业务状态表</small>
+            </h1>
+        </div>
+        <div id="app">
+            <el-input placeholder="请输入身份证号" style="width: 200px;" v-model="acard" clearable>
+            </el-input>
+            <el-button type="success" @click="getmater">查询</el-button>
+            <div class="block">
+                <el-table :data="tableData" stripe style="width: 100%">
+                    <el-table-column prop="bdname" label="业务类型">
+                    </el-table-column>
+                    <el-table-column prop="bsstatus" label="业务状态">
+                    </el-table-column>
+                    <el-table-column prop="aname" label="申请人">
+                    </el-table-column>
+                    <el-table-column prop="acard" label="身份证件号码">
+                    </el-table-column>
+                    <el-table-column prop="bsdate" label="受理时间">
+                    </el-table-column>
+                    <el-table-column prop="workname" label="受理人">
+                    </el-table-column>
+                </el-table>
+                <el-pagination background :page-size="pageSize" layout="prev, pager, next" :total="total"
+                    @prev-click="toprev" @next-click="tonext" @current-change="topage">
+                </el-pagination>
+            </div>
+        </div>
+
+
+
+
+        </div>
+        <script>
+            new Vue({
+                el: "#app",
+                data() {
+                    return {
+                        tableData: [],
+                        total: "",
+                        pageSize: 5,
+                        pageNum: 1,
+                        acard: "",
+                    };
+                },
+                mounted() {
+                    this.getmater();
+                },
+                methods: {
+                    getmater() {
+                        axios({
+                            headers:  {'Content-Type': 'application/x-www-form-urlencoded'},
+                            method: 'post',
+                            url: "http://localhost:9000/Bussnessstatus/ybdyzxfindAll1",
+                            params: {
+                                pageNum: this.pageNum,
+                                pageSize: this.pageSize,
+                                acard: this.acard
+                            }
+                        })
+                            .then(res => {
+                                this.tableData = res.data.list;
+                                this.total = res.data.total;
+                            })
+                            .catch(err => {
+                                console.error(err);
+                            })
+                    },
+                    toprev() {
+                        this.pageNum = this.pageNum - 1;
+                        this.getmater();
+                    },
+                    tonext() {
+                        this.pageNum = this.pageNum + 1;
+                        this.getmater();
+                    },
+                    topage(val) {
+                        this.pageNum = val;
+                        this.getmater();
+                    },
+                    indexMethod(index){
+                        return index + (this.pageNum - 1) * this.pageSize + 1;
+                    }
+                }
+            })
+        </script>
+    </body>
+
+</html>

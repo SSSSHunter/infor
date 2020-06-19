@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/vue-router/3.2.0/vue-router.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+        <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div id="app">
+            <el-menu :default-active="this.$route.path" mode="horizontal" background-color="#808080" text-color="#fff"
+                active-text-color="#ffd04b" router>
+                <el-menu-item v-for="(item, index) in navList" :key="index" :index="item.name" :router="item.name">
+                    {{item.navItme}}</el-menu-item>
+            </el-menu>
+            <router-view></router-view>
+        </div>
+
+
+        <!--登记簿封面-->
+        <template id="home">
+            <div>
+                <el-table :data="tableData" :span-method="arraySpanMethod" fit>
+                    <el-table-column label="--登记簿封面--" header-align="center" align="center">
+                        <el-table-column :label="tableData[0].oneRow1" header-align="center" align="center">
+                            <el-table-column :label="tableData[0].twoRow1" header-align="center" align="left">
+                                <el-table-column :label="tableData[0].address" header-align="center" align="left">
+                                    <el-table-column :label="tableData[0].mechanism" prop="time" header-align="center"
+                                        align="right">
+                                    </el-table-column>
+                                </el-table-column>
+                            </el-table-column>
+
+                        </el-table-column>
+
+                        <el-table-column :label="tableData[0].oneRow2" header-align="center" align="center">
+                            <el-table-column :label="tableData[0].twoRow2" header-align="center" align="center">
+                                <el-table-column :label="tableData[0].addressInfo" header-align="center" align="center">
+                                    <el-table-column :label="tableData[0].count" header-align="center" align="center">
+                                    </el-table-column>
+                                </el-table-column>
+
+                            </el-table-column>
+                        </el-table-column>
+                    </el-table-column>
+
+
+                </el-table>
+            </div>
+        </template>
+
+        <!-- 登记簿基本状况 -->
+        <template id="basic">
+            <div>
+                <el-table :data="tableData" fit>
+                    <el-table-column label="房屋登记簿 基本状况" prop="houseCode" header-align="center" align="left">
+                    </el-table-column>
+                </el-table>
+                <el-table :data="tableData1" fit border :show-header="false" :span-method="arraySpanMethod">
+
+                    <el-table-column label="房屋坐落" prop="title1" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="房屋坐落" prop="" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="房屋坐落" prop="title2" header-align="center" align="center">
+                    </el-table-column>
+
+
+                    <el-table-column label="房屋坐落"  header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="房屋坐落" prop="title3" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="房屋坐落" header-align="center" align="center">
+
+                    </el-table-column>
+
+                </el-table>
+            </div>
+        </template>
+
+        <!-- 共有部分 -->
+        <template id="common">
+            <div>
+                <el-table :data="tableData" fit border>
+                    <el-table-column label="房屋登记簿 建筑物区分所有业主共有部分" header-align="center" align="left">
+                        <el-table-column label="建筑物区分所有业主共有部分权利人" header-align="center" align="center">
+                            <el-table-column label="业务宗号" prop="" header-align="center" align="center">
+                            </el-table-column>
+                            <el-table-column label="建筑编号" prop="" header-align="center" align="center">
+                            </el-table-column>
+                            <el-table-column label="建筑物名称" prop="" header-align="center" align="center">
+                            </el-table-column>
+                        </el-table-column>
+                        <el-table-column label="" prop="" header-align="center" align="center">
+                            <el-table-column label="登记时间" prop="" header-align="center" align="center">
+                            </el-table-column>
+                            <el-table-column label="终审人/登簿人" prop="workid" header-align="center" align="center">
+                            </el-table-column>
+                            <el-table-column label="附记" prop="" header-align="center" align="center">
+                            </el-table-column>
+                        </el-table-column>
+                    </el-table-column>
+                </el-table>
+            </div>
+        </template>
+
+        <!-- 所有权 -->
+        <template id="ownership">
+            <div>
+                <el-table :data="tableData" fit>
+                    <el-table-column label="所有权" prop="houseCode" header-align="center" align="left">
+                    </el-table-column>
+                </el-table>
+                <el-table :data="tableHeader" fit border>
+                    <el-table-column label="内容\序号" prop="title" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="01" prop="" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="02" prop="" header-align="center" align="center">
+                    </el-table-column>
+                </el-table>
+            </div>
+        </template>
+
+        <!-- 他项权(现房抵押) -->
+        <template id="mortgage">
+            <div style="width: 100%; height: 600px; background-color: aqua;">
+                <el-table :data="tableData" fit>
+                    <el-table-column label="他项权(现房抵押)" prop="houseCode" header-align="center" align="left">
+                    </el-table-column>
+                </el-table>
+                <el-table :data="tableHeader" fit border>
+                    <el-table-column label="内容\序号" prop="title" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="01" prop="" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="02" prop="" header-align="center" align="center">
+                    </el-table-column>
+                </el-table>
+            </div>
+        </template>
+
+        <!-- 他项权(在建抵押) -->
+        <template id="construction">
+            <div>
+                <el-table :data="tableData" fit>
+                    <el-table-column label="他项权(在建抵押)" prop="houseCode" header-align="center" align="left">
+                    </el-table-column>
+                </el-table>
+                <el-table :data="tableHeader" fit border>
+                    <el-table-column label="内容\序号" prop="title" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="01" prop="" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="02" prop="" header-align="center" align="center">
+                    </el-table-column>
+                </el-table>
+            </div>
+        </template>
+
+        <!-- 其他(预告登记) -->
+        <template id="advance">
+            <div>
+                <el-table :data="tableData" fit>
+                    <el-table-column label="其他(预告登记)" prop="houseCode" header-align="center" align="left">
+                    </el-table-column>
+                </el-table>
+                <el-table :data="tableHeader" fit border>
+                    <el-table-column label="内容\序号" prop="title" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="01" prop="" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="02" prop="" header-align="center" align="center">
+                    </el-table-column>
+                </el-table>
+            </div>
+        </template>
+
+        <!-- 其他(查封登记) -->
+        <template id="seize">
+            <div>
+                <el-table :data="tableData" fit>
+                    <el-table-column label="其他(查封登记)" prop="houseCode" header-align="center" align="left">
+                    </el-table-column>
+                </el-table>
+                <el-table :data="tableHeader" fit border :span-method="arraySpanMethod">
+                    <el-table-column label="内容\序号" prop="title" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="01" prop="" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="02" prop="" header-align="center" align="center">
+                    </el-table-column>
+                </el-table>
+            </div>
+        </template>
+
+        <!-- 其他(异议登记) -->
+        <template id="objection">
+            <div>
+                <el-table :data="tableData" fit>
+                    <el-table-column label="房屋登记簿 其他部分（异议登记）" prop="houseCode" header-align="center" align="left">
+                    </el-table-column>
+                </el-table>
+                <el-table :data="tableHeader" fit border :span-method="arraySpanMethod">
+                    <el-table-column label="内容\序号" prop="title" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="01" prop="" header-align="center" align="center">
+                    </el-table-column>
+                    <el-table-column label="02" prop="" header-align="center" align="center">
+                    </el-table-column>
+                </el-table>
+            </div>
+        </template>
+
+
+        <script>
+            var home = {
+                template: "#home",
+                data() {
+                    return {
+                        tableData: [{
+                            oneRow1: "丘地号",
+                            oneRow2: "234-545-2",
+                            twoRow1: "房屋登记簿编号：",
+                            twoRow2: "20081001",
+                            count: "本号共 1 本 第 1 本",
+                            address: "陕西 省（自治区、直辖市） 西安 市 高陵 区（县、市）",
+                            addressInfo: "皇城东路 街（路） 6 号",
+                            mechanism: "登记机构：高陵县房管所",
+                            time: "登记时间: 2020-06-13",
+                        }]
+                    }
+                },
+                methods: {
+                    arraySpanMethod({ row, column, rowIndex, columnIndex }) {
+                        if (rowIndex === 1 || rowIndex === 2) {
+                            return [1, 5]
+                        } else {
+                            return [1, 2]
+                        }
+                    },
+
+                    handleEdit(index, row) {
+                        console.log(index, row);
+                    },
+                    handleDelete(index, row) {
+                        console.log(index, row);
+                    }
+
+                },
+            }
+
+
+            var basic = {
+                template: "#basic",
+                data() {
+                    return {
+                        tableData: [{
+                            houseCode: "房屋编号: 20081001",
+                        }],
+
+                        tableData1: [
+                            {
+                                title1: "房屋坐落",
+                                title2: "西安市新城区皇城东路6号",
+                                title3: ""
+                                
+                            },
+                            {
+                                title1: "地号：",
+                                title2: "业务宗号：",
+                                title3: "建筑物总层数：",
+                            },
+                            {
+                                title1: "土地性质：",
+                                title2: "建筑面积：",
+                                title3: "规划用途：",
+                            },
+                            {
+                                title1: "土地取得方式：",
+                                title2: "套内建筑面积：",
+                                title3: "房屋结构：",
+                            },
+                            {
+                                title1: "土地使用年限：",
+                                title2: "分摊共有面积：",
+                                title3: "登记时间：",
+                            },
+                            {
+                                title1: "土地证号：",
+                                title2: "专有部分面积：",
+                                title3: "终审人/登簿人：",
+                            },
+                        ],
+                    }
+                },
+                methods: {
+                    arraySpanMethod({ row, column, rowIndex, columnIndex }) {
+                        if (rowIndex === 0) {
+                            if(columnIndex === 0){
+                                return [1, 2]
+                            }
+                            if(columnIndex === 2){
+                                return [1, 3]
+                            }
+                        } 
+                    },
+                },
+            }
+
+            var common = {
+                template: "#common",
+                data() {
+                    return {
+                        tableData: [
+                            {
+                                workid: "/"
+                            },
+                            {
+                                workid: "/"
+                            },
+                            {
+                                workid: "/"
+                            }
+                        ]
+                    }
+                },
+            }
+            var ownership = {
+                template: "#ownership",
+                data() {
+                    return {
+                        tableData: [
+                            {
+                                houseCode: "房屋编号: 20081001",
+
+                            },
+                        ],
+                        tableHeader: [
+                            {
+                                title: "业务宗号"
+                            },
+                            {
+                                title: "所有权人"
+                            },
+                            {
+                                title: "身份证明号"
+                            },
+                            {
+                                title: "户籍所在地"
+                            },
+                            {
+                                title: "共有情况"
+                            },
+                            {
+                                title: "房屋取得方式"
+                            },
+                            {
+                                title: "房屋性质"
+                            },
+                            {
+                                title: "所有权证号"
+                            },
+                            {
+                                title: "登记时间"
+                            },
+                            {
+                                title: "终审人/登簿人"
+                            },
+                            {
+                                title: "附记"
+                            },
+                        ],
+                    }
+                },
+            }
+            var mortgage = {
+                template: "#mortgage",
+                data() {
+                    return {
+                        tableData: [
+                            {
+                                houseCode: "房屋编号: 20081001",
+
+                            },
+                        ],
+                        tableHeader: [
+                            {
+                                title: "业务宗号"
+                            },
+                            {
+                                title: "一般抵押/最高抵押"
+                            },
+                            {
+                                title: "抵押权人"
+                            },
+                            {
+                                title: "抵押人"
+                            },
+                            {
+                                title: "被担保主债权数额（最高债权数额）"
+                            },
+                            {
+                                title: "担保范围"
+                            },
+                            {
+                                title: "债务履行期限（债权确定期间）"
+                            },
+                            {
+                                title: "抵押登记证明号"
+                            },
+                            {
+                                title: "业务宗号"
+                            },
+                            {
+                                title: "最高债权确定事实和数额"
+                            },
+                            {
+                                title: "登记时间"
+                            },
+                            {
+                                title: "终审人/登簿人"
+                            },
+                            {
+                                title: "抵押注销业务宗号"
+                            },
+                            {
+                                title: "登记时间"
+                            },
+                            {
+                                title: "终审人/登簿人"
+                            },
+                            {
+                                title: "附记"
+                            },
+                        ],
+                    }
+                },
+            }
+            var construction = {
+                template: "#construction",
+                data() {
+                    return {
+                        tableData: [
+                            {
+                                houseCode: "房屋编号: 20081001",
+
+                            },
+                        ],
+                        tableHeader: [
+                            {
+                                title: "业务宗号"
+                            },
+                            {
+                                title: "一般抵押/最高抵押"
+                            },
+                            {
+                                title: "抵押权人"
+                            },
+                            {
+                                title: "抵押人"
+                            },
+                            {
+                                title: "在建工程坐落"
+                            },
+                            {
+                                title: "被担保主债权数额（最高债权数额）"
+                            },
+                            {
+                                title: "担保范围"
+                            },
+                            {
+                                title: "债务履行期限（债权确定期间）"
+                            },
+                            {
+                                title: "抵押登记证明号"
+                            },
+                            {
+                                title: "业务宗号"
+                            },
+                            {
+                                title: "最高债权确定事实和数额"
+                            },
+                            {
+                                title: "登记时间"
+                            },
+                            {
+                                title: "终审人/登簿人"
+                            },
+                            {
+                                title: "抵押注销业务宗号"
+                            },
+                            {
+                                title: "登记时间"
+                            },
+                            {
+                                title: "终审人/登簿人"
+                            },
+                            {
+                                title: "附记"
+                            },
+                        ],
+                    }
+                },
+            }
+            var advance = {
+                template: "#advance",
+                data() {
+                    return {
+                        tableData: [
+                            {
+                                houseCode: "房屋编号: 20081001",
+
+                            },
+                        ],
+                        tableHeader: [
+                            {
+                                title: "业务宗号"
+                            },
+                            {
+                                title: "预告登记种类"
+                            },
+                            {
+                                title: "权利人"
+                            },
+                            {
+                                title: "权利人身份证明号"
+                            },
+                            {
+                                title: "义务人"
+                            },
+                            {
+                                title: "义务人身份证明号"
+                            },
+                            {
+                                title: "预告登记证明号"
+                            },
+                            {
+                                title: "登记时间"
+                            },
+                            {
+                                title: "终审人/登簿人"
+                            },
+                            {
+                                title: "预告注销业务宗号"
+                            },
+                            {
+                                title: "登记时间"
+                            },
+                            {
+                                title: "终审人/登簿人"
+                            },
+                            {
+                                title: "附记"
+                            },
+                        ],
+                    }
+                },
+            }
+            var seize = {
+                template: "#seize",
+                data() {
+                    return {
+                        tableData: [
+                            {
+                                houseCode: "房屋编号: 20081001",
+
+                            },
+                        ],
+                        tableHeader: [
+                            {
+                                title: "业务宗号"
+                            },
+                            {
+                                title: "查封机关"
+                            },
+                            {
+                                title: "查封文件"
+                            },
+                            {
+                                title: "查封文号"
+                            },
+                            {
+                                title: "查封时间"
+                            },
+                            {
+                                title: "查封期限"
+                            },
+                            {
+                                title: "登记时间"
+                            },
+                            {
+                                title: "终审人/登簿人"
+                            },
+                            {
+                                title: "查封注销业务宗号"
+                            },
+                            {
+                                title: "解除查封文件"
+                            },
+                            {
+                                title: "解除查封文号"
+                            },
+                            {
+                                title: "解除查封时间"
+                            },
+                            {
+                                title: "登记时间"
+                            },
+                            {
+                                title: "终审人/登簿人"
+                            },
+                            {
+                                title: "附记"
+                            },
+
+
+
+                        ],
+
+                    }
+                },
+                methods: {
+                    arraySpanMethod({ row, column, rowIndex, columnIndex }) {
+                        if (columnIndex === 0) {
+                            if (rowIndex === -1) {
+                                return [1, 3]
+                            }
+                        }
+                    },
+                },
+            }
+            var objection = {
+                template: "#objection",
+                data() {
+                    return {
+                        tableData: [
+                            {
+                                houseCode: "房屋编号: 20081001",
+
+                            },
+                        ],
+                        tableHeader: [
+                            {
+                                title: "业务宗号"
+                            },
+                            {
+                                title: "申请人"
+                            },
+                            {
+                                title: "异议事项"
+                            },
+                            {
+                                title: "登记时间"
+                            },
+                            {
+                                title: "终审人/登簿人"
+                            },
+                            {
+                                title: "异议注销业务宗号"
+                            },
+                            {
+                                title: "登记时间"
+                            },
+                            {
+                                title: "终审人/登簿人"
+                            },
+                            {
+                                title: "附记"
+                            },
+
+
+                        ],
+
+                    }
+                },
+                methods: {
+                    arraySpanMethod({ row, column, rowIndex, columnIndex }) {
+                        if (columnIndex === 0) {
+                            if (rowIndex === 8) {
+                                return [1, 3]
+                            }
+                        }
+                    },
+                },
+            }
+
+
+
+            const router = new VueRouter({
+                routes: [
+                    { component: home, path: "/home", name: "home" },
+                    { component: basic, path: "/basic", name: "basic" },
+                    { component: common, path: "/common", name: "common" },
+                    { component: ownership, path: "/ownership", name: "ownership" },
+                    { component: mortgage, path: "/mortgage", name: "mortgage" },
+                    { component: construction, path: "/construction", name: "construction" },
+                    { component: advance, path: "/advance", name: "advance" },
+                    { component: seize, path: "/seize", name: "seize" },
+                    { component: objection, path: "/objection", name: "objection" },
+                ]
+            })
+
+
+            new Vue({
+                el: "#app",
+                data() {
+                    return {
+                        navList: [
+                            { name: "/home", navItme: "登记簿" },
+                            { name: "/basic", navItme: "基本状态" },
+                            { name: "/common", navItme: "共有部分" },
+                            { name: "/ownership", navItme: "所有权" },
+                            { name: "/mortgage", navItme: "他项权（现房抵押）" },
+                            { name: "/construction", navItme: "他项权（在建抵押）" },
+                            { name: "/advance", navItme: "其他（预告登记）" },
+                            { name: "/seize", navItme: "其他（查封登记）" },
+                            { name: "/objection", navItme: "其他（异议登记）" },
+
+                        ],
+
+                    };
+                },
+                methods: {
+
+                },
+                router: router
+            })
+
+
+
+        </script>
+    </body>
+
+</html>

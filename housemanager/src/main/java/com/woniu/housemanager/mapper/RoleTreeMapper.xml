@@ -88,6 +88,9 @@
     -->
     rid, id, rule
   </sql>
+  <select id="selectByRid" parameterType="int" resultType="java.lang.Integer">
+    select id from roletree where rid=#{rid}
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.woniu.housemanager.pojo.RoleTreeExample" >
     <!--
       WARNING - @mbggenerated
@@ -129,6 +132,9 @@
     where rid = #{rid,jdbcType=INTEGER}
       and id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByRid">
+    delete from roletree where rid=#{rid}
+  </delete>
   <delete id="deleteByExample" parameterType="com.woniu.housemanager.pojo.RoleTreeExample" >
     <!--
       WARNING - @mbggenerated
@@ -150,6 +156,13 @@
       )
     values (#{rid,jdbcType=INTEGER}, #{id,jdbcType=INTEGER}, #{rule,jdbcType=VARCHAR}
       )
+  </insert>
+  <insert id="insertSome" parameterType="java.util.Map">
+    insert into roletree
+    (rid,id,rule)
+    <foreach collection="pids" item="pid" open="values" separator=",">
+      (#{rid},${pid},null )
+    </foreach>
   </insert>
   <insert id="insertSelective" parameterType="com.woniu.housemanager.pojo.RoleTree" >
     <!--
@@ -192,6 +205,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+ 
   <update id="updateByExampleSelective" parameterType="map" >
     <!--
       WARNING - @mbggenerated

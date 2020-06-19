@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+<title>Document</title>
+<style>
+li{
+list-style: none;
+}
+</style>
+<link rel="stylesheet" href="../ztree/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="../js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="../js/jquery.ztree.core-3.5.js"></script>
+
+
+    <SCRIPT type="text/javascript" >
+            var zNodes = null;
+            axios.defaults.withCredentials = true;
+
+            axios.get('http://localhost:9000/getZtree')
+                            .then(res => {
+                                zNodes = res.data;
+                                console.log(res.data)
+                                init();    
+
+
+                            })
+                            .catch(err => {
+                                console.error(err); 
+             })
+        
+          var zTree;
+          var demoIframe;
+      
+          var setting = {
+              view: {
+                  dblClickExpand: false,
+                  showLine: true,
+                  selectedMulti: false
+              },
+              data: {
+                  simpleData: {
+                      enable:true,
+                      idKey: "id",
+                      pIdKey: "pid",
+                      rootPId: ""
+                  }
+              },
+              callback: {
+                  beforeClick: function(treeId, treeNode) {
+                      var zTree = $.fn.zTree.getZTreeObj("tree");
+                      if (treeNode.isParent) {
+                          zTree.expandNode(treeNode);
+                          return false;
+                      } else {
+                          //alert(treeNode.file);
+                          demoIframe.attr("src",treeNode.file);
+                          return true;
+                      }
+                  }
+              }
+          };
+      
+          
+         
+          function init(){
+            var t = $("#tree");
+              t = $.fn.zTree.init(t, setting, zNodes);
+              demoIframe = $("#testIframe");
+              demoIframe.bind("load", loadReady);
+              var zTree = $.fn.zTree.getZTreeObj("tree");
+              zTree.selectNode(zTree.getNodeByParam("id", 101));
+          }
+
+      
+          function loadReady() {
+              var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+              htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+              maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+              h = demoIframe.height() >= maxH ? minH:maxH ;
+              if (h < 530) h = 530;
+              demoIframe.height(h);
+          }
+
+
+        </SCRIPT>
+       </HEAD>
+      
+      <BODY>
+      <div id="app">
+          欢迎{{str}}登陆
+      </div>
+      <TABLE border=0 height=600px align=left>
+          <TR>
+              <TD width=260px align=left valign=top style="BORDER-RIGHT: #999999 1px dashed">
+                  <ul id="tree" class="ztree" style="width:260px; overflow:auto;"></ul>
+              </TD>
+              <TD width=100%  align=left valign=top><IFRAME ID="testIframe" Name="testIframe" FRAMEBORDER=0 SCROLLING=AUTO width=100%  height=730px SRC="core/standardData.html"></IFRAME></TD>
+          </TR>
+      </TABLE>
+      
+      </BODY>
+      </HTML>
+      <script>
+          var vue=new Vue({
+             el:"#app",
+             data:{
+                 str:window.sessionStorage.getItem("name")
+             } 
+          })
+    
+      </script>
+      

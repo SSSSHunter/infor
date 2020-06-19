@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>所有权登记</title>
+        <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+        <link rel="stylesheet" href="layui/css/layui.css">
+    </head>
+
+    <body>
+        <div id="app">
+            <form class="layui-form" name="form" method="post" action="">
+                <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所有权登记:</label>
+                    <div class="layui-input-inline">
+                        <select name="areaid" lay-filter="areas" v-model="areaid" lay-verify="required" @change="makeareaid($event)">
+                            <option v-for="item in ownership" :value="item.bdid"  style="width: 200px;">{{item.bdname}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <span>所有权登记必要文件：</span>
+                    
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="" title="（一）申请人签名或盖章的登记申请书；" lay-skin="primary" checked>
+                        </div>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="" title="（二）申请人身份证明；" lay-skin="primary" checked>
+                        </div>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="" title="（三）登记原因证明文件；" lay-skin="primary" checked>
+                        </div>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="" title="（四）房屋权属证书，但登记原因证明文件为人民法院、仲裁委员会生效的法律文书的，以及法律、法规和本办法另有规定的除外" lay-skin="primary" checked>
+                        </div>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="" title="（五）为完成登记所必需的其他文件。" lay-skin="primary">
+                            <input type="text" name="title" required lay-verify="required" placeholder="在此处填写其他必要文件名称" autocomplete="off" class="layui-input">  
+                            
+                        </div>
+                    
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">申请人:</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="aname" v-model="aname" required  lay-verify="required" placeholder="请输入申请人姓名" autocomplete="off" class="layui-input">
+                    </div>
+                    <label class="layui-form-label">申请人身份证件号码:</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="acard" v-model="acard" required  lay-verify="required" placeholder="请输入申请人身份证件号码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="accept" v-on:click="sub()">受理</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+                <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+            </form>
+        </div>
+        <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+        <script src="layui/layui.js"></script>
+        <script>
+            layui.use('form', function (){
+                var form = layui.form;
+                form.on('submit(accept)', function(data){
+                    formdata = JSON.stringify(data.field);
+                    layer.msg(JSON.stringify(data.field));
+                    console.log(JSON.stringify(data.field));
+                    return false;
+                });
+                //各种基于事件的操作，下面会有进一步介绍
+            });
+
+            new Vue({
+               el : "#app",
+               data : {
+                   ownership: "",
+                   alldata: "",
+                   aname: "",
+                   acard: "",
+                   areaid: 1,
+               },
+               mounted() {
+                   this.getownership()
+               }, 
+               methods: {
+                getownership(){
+                    axios.get("http://localhost:9000/businessType/findAll")
+                    .then(res => {
+                        console.log(res.data[0].bunessdetials);
+                        this.ownership = res.data[0].bunessdetials
+                    })
+                    .catch(err => {
+                        console.error(err); 
+                    })
+                },
+                sub(){
+                    console.log(this.aname + "  " + this.acard + " " + this.areaid)
+                    var storage = window.sessionStorage;
+                    storage.setItem("aname", this.aname);
+                    storage.setItem("acard", this.acard);
+                    window.location.href="Registration_form.html";
+                },
+                makeareaid(event){
+                    console.log(event);
+                }
+               },
+            });
+
+
+        </script>
+
+    </body>
+
+</html>
